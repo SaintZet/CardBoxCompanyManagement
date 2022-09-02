@@ -11,12 +11,12 @@ namespace CardBoxCompanyManagement
 {
     public class MainViewModel : INotifyPropertyChanged
     {
-        private string search;
+        private string search = string.Empty;
 
         public MainViewModel()
         {
             Companies = new ObservableCollection<Company>(LoadCompanies());
-            DataList.Filter = new Predicate<object>(p => Filter(p as Company));
+            DataList.Filter = new Predicate<object>(c => Filter((Company)c));
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -28,6 +28,11 @@ namespace CardBoxCompanyManagement
             get => CollectionViewSource.GetDefaultView(Companies);
         }
 
+        public string RecordsCount
+        {
+            get => DataList.Cast<object>().Count().ToString();
+        }
+
         public string SearchCriteria
         {
             get { return search; }
@@ -36,6 +41,7 @@ namespace CardBoxCompanyManagement
                 search = value;
                 OnPropertyChanged(nameof(SearchCriteria));
                 DataList.Refresh();
+                OnPropertyChanged(nameof(RecordsCount));
             }
         }
 
@@ -47,8 +53,8 @@ namespace CardBoxCompanyManagement
         private bool Filter(Company company)
         {
             return SearchCriteria == null
-                || company.CompanyID.ToString().IndexOf(SearchCriteria, StringComparison.OrdinalIgnoreCase) != -1
-                || company.CompanyName.IndexOf(SearchCriteria, StringComparison.OrdinalIgnoreCase) != -1;
+                || company.ID.ToString().IndexOf(SearchCriteria, StringComparison.OrdinalIgnoreCase) != -1
+                || company.Name.IndexOf(SearchCriteria, StringComparison.OrdinalIgnoreCase) != -1;
         }
 
         //public ICommand SearchCommand => new RelayCommand(execute: AcceptFilters, canExecute: _ => true);

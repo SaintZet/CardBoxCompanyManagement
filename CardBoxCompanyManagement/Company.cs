@@ -9,20 +9,20 @@ namespace CardBoxCompanyManagement
 {
     public class Company
     {
-        public Company(int companyID, string companyName, string category, string summary)
+        public Company(int ID, string Name, string category, string summary)
         {
-            CompanyID = companyID;
-            CompanyName = companyName;
+            this.ID = ID;
+            this.Name = Name;
             Category = category;
             Summary = summary;
         }
 
         [JsonProperty("bulstat")]
         [JsonConverter(typeof(ParseStringConverter))]
-        public int CompanyID { get; set; }
+        public int ID { get; set; }
 
         [JsonProperty("title")]
-        public string CompanyName { get; set; }
+        public string Name { get; set; }
 
         [JsonProperty("category_id")]
         public string Category { get; set; }
@@ -31,6 +31,6 @@ namespace CardBoxCompanyManagement
         public string Summary { get; set; }
 
         [JsonProperty("image")]
-        public Uri Image { get; set; }
+        public Uri? Image { get; set; } = null;
     }
 }
