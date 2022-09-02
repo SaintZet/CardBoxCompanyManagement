@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using CardBoxCompanyManagement.Infrastructure;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Windows;
 
@@ -11,8 +12,12 @@ namespace CardBoxCompanyManagement
             AppHost = Host.CreateDefaultBuilder()
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddSingleton<MainWindow>();
-                    services.AddTransient<ICategoriesRepository, CategoriesRepository>();
+                    services.AddSingleton(s => new MainWindow(s.GetRequiredService<MainViewModel>()));
+
+                    services.AddTransient<MainViewModel>();
+
+                    services.AddSingleton<ICategoriesRepository, CategoriesRepository>();
+                    services.AddSingleton<ICompaniesRepository, CompaniesRepository>();
                 })
                 .Build();
         }
@@ -32,6 +37,8 @@ namespace CardBoxCompanyManagement
         protected override async void OnExit(ExitEventArgs e)
         {
             await AppHost!.StopAsync();
+            AppHost.Dispose();
+
             base.OnExit(e);
         }
     }

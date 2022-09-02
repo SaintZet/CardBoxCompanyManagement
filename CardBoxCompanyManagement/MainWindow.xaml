@@ -10,9 +10,6 @@
         MinHeight="350"
         Width="800"
         MinWidth="800">
-    <Window.DataContext>
-        <local:MainViewModel />
-    </Window.DataContext>
     <Grid>
         <TabControl>
             <TabItem>

@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CardBoxCompanyManagement
+namespace CardBoxCompanyManagement.Infrastructure
 {
     public class CategoriesRepository : ICategoriesRepository
     {
-        private Dictionary<string, string> Load()
+        //TODO: Add lazy initialization
+        public Dictionary<string, string> GetAll()
         {
             HttpRequest httpRequest = new("https://microinvest.cardbox.bg/categories/");
 

@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using CardBoxCompanyManagement.Infrastructure;
+using CardBoxCompanyManagement.Domain;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -11,14 +13,16 @@ namespace CardBoxCompanyManagement
     public class MainViewModel : INotifyPropertyChanged
     {
         private readonly ICategoriesRepository category;
+        private readonly ICompaniesRepository companies;
         private string search = string.Empty;
 
-        public MainViewModel(ICategoriesRepository category)
+        public MainViewModel(ICategoriesRepository category, ICompaniesRepository companies)
         {
             this.category = category;
+            this.companies = companies;
             //var x = LoadCategories();
 
-            Companies = new ObservableCollection<Company>(LoadCompanies());
+            Companies = new ObservableCollection<Company>(companies.GetAll());
             DataList.Filter = new Predicate<object>(c => Filter((Company)c));
         }
 
@@ -66,20 +70,5 @@ namespace CardBoxCompanyManagement
         //{
         //    DataList = new ObservableCollection<Company>(originalDataList.Where(x => x.Category == "24").ToList());
         //}
-
-        private List<Company> LoadCompanies()
-        {
-            List<Company> companies = new();
-
-            HttpRequest httpRequest = new("https://microinvest.cardbox.bg/companies/");
-            var response = httpRequest.Get();
-
-            foreach (var item in JsonConvert.DeserializeObject<Dictionary<string, Company>>(response))
-            {
-                companies.Add(item.Value);
-            }
-
-            return companies;
-        }
     }
 }
