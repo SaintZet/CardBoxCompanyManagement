@@ -5,16 +5,19 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Data;
-using System.Windows.Input;
 
 namespace CardBoxCompanyManagement
 {
     public class MainViewModel : INotifyPropertyChanged
     {
+        private readonly ICategoriesRepository category;
         private string search = string.Empty;
 
-        public MainViewModel()
+        public MainViewModel(ICategoriesRepository category)
         {
+            this.category = category;
+            //var x = LoadCategories();
+
             Companies = new ObservableCollection<Company>(LoadCompanies());
             DataList.Filter = new Predicate<object>(c => Filter((Company)c));
         }
@@ -66,12 +69,12 @@ namespace CardBoxCompanyManagement
 
         private List<Company> LoadCompanies()
         {
-            List<Company> companies = new List<Company>();
+            List<Company> companies = new();
 
             HttpRequest httpRequest = new("https://microinvest.cardbox.bg/companies/");
             var response = httpRequest.Get();
 
-            foreach (var item in JsonConvert.DeserializeObject<Dictionary<string, Company>>(response)!)
+            foreach (var item in JsonConvert.DeserializeObject<Dictionary<string, Company>>(response))
             {
                 companies.Add(item.Value);
             }
