@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace CardBoxCompanyManagement
+namespace CardBoxCompanyManagement.Application
 {
     public class RelayCommand : ICommand
     {

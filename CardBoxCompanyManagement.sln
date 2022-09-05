@@ -5,9 +5,9 @@ VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CardBoxCompanyManagement.Application", "CardBoxCompanyManagement\CardBoxCompanyManagement.Application.csproj", "{4D18A50A-45E1-4EAA-9EB9-A988F1057D33}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardBoxCompanyManagement.Infrastructure", "Service\CardBoxCompanyManagement.Infrastructure.csproj", "{DA1672F5-D31A-4323-9CE8-7329F6FE7849}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CardBoxCompanyManagement.Infrastructure", "Service\CardBoxCompanyManagement.Infrastructure.csproj", "{DA1672F5-D31A-4323-9CE8-7329F6FE7849}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardBoxCompanyManagement.Domain", "CardBoxCompanyManagement.Domain\CardBoxCompanyManagement.Domain.csproj", "{2A098C9C-28D3-4A3C-ACCC-E4B771BEC790}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CardBoxCompanyManagement.Domain", "CardBoxCompanyManagement.Domain\CardBoxCompanyManagement.Domain.csproj", "{2A098C9C-28D3-4A3C-ACCC-E4B771BEC790}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

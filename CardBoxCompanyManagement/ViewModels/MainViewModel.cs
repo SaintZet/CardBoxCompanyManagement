@@ -7,19 +7,24 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Data;
+using CardBoxCompanyManagement.Application.StartupHelpers;
+using CardBoxCompanyManagement.Application.View;
+using System.Windows.Input;
 
-namespace CardBoxCompanyManagement
+namespace CardBoxCompanyManagement.Application.ViewModels
 {
-    public class MainViewModel : INotifyPropertyChanged
+    internal class MainViewModel : INotifyPropertyChanged
     {
         private readonly ICategoriesRepository category;
         private readonly ICompaniesRepository companies;
+        private readonly IAbstractFactory<AddCompany> factory;
         private string search = string.Empty;
 
-        public MainViewModel(ICategoriesRepository category, ICompaniesRepository companies)
+        public MainViewModel(ICategoriesRepository category, ICompaniesRepository companies, IAbstractFactory<AddCompany> factory)
         {
             this.category = category;
             this.companies = companies;
+            this.factory = factory;
             //var x = LoadCategories();
 
             Companies = new ObservableCollection<Company>(companies.GetAll());
@@ -52,6 +57,9 @@ namespace CardBoxCompanyManagement
             }
         }
 
+        //public ICommand SearchCommand => new RelayCommand(execute: AcceptFilters, canExecute: _ => true);
+        public ICommand AddCompany => new RelayCommand(execute: _ => factory.Create().Show(), canExecute: _ => true);
+
         public void OnPropertyChanged(string prop = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
@@ -64,7 +72,6 @@ namespace CardBoxCompanyManagement
                 || company.Name.IndexOf(SearchCriteria, StringComparison.OrdinalIgnoreCase) != -1;
         }
 
-        //public ICommand SearchCommand => new RelayCommand(execute: AcceptFilters, canExecute: _ => true);
         //public ICommand ResetCommand => new RelayCommand(execute: _ => DataList = new ObservableCollection<Company>(LoadCompanies()), canExecute: _ => true);
         //private void AcceptFilters(object _)
         //{
