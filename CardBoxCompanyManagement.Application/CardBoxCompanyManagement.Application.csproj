@@ -15,7 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CardBoxCompanyManagement.Domain\CardBoxCompanyManagement.Domain.csproj" />
-    <ProjectReference Include="..\Service\CardBoxCompanyManagement.Infrastructure.csproj" />
+    <ProjectReference Include="..\CardBoxCompanyManagement.Infrastructure\CardBoxCompanyManagement.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
