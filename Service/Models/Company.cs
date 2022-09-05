@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-
-using System.Globalization;
+﻿using CardBoxCompanyManagement.Infrastructure.Convertors;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
-namespace CardBoxCompanyManagement.Domain;
+namespace CardBoxCompanyManagement.Infrastructure;
 
 public class Company
 {
-    public Company(int ID, string Name, string category, string summary)
+    public Company(int ID, string Name, Category category, string summary)
     {
         this.ID = ID;
         this.Name = Name;
@@ -25,7 +21,8 @@ public class Company
     public string Name { get; set; }
 
     [JsonProperty("category_id")]
-    public string Category { get; set; }
+    [JsonConverter(typeof(StringToCategoryConverter))]
+    public Category Category { get; set; }
 
     [JsonProperty("summary")]
     public string Summary { get; set; }

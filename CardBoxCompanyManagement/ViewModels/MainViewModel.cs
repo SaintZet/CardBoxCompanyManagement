@@ -1,17 +1,14 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using CardBoxCompanyManagement.Infrastructure;
-using CardBoxCompanyManagement.Domain;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Data;
-using CardBoxCompanyManagement.Application.StartupHelpers;
-using CardBoxCompanyManagement.Application.View;
+using CardBoxCompanyManagement.StartupHelpers;
+using CardBoxCompanyManagement.View;
 using System.Windows.Input;
 
-namespace CardBoxCompanyManagement.Application.ViewModels
+namespace CardBoxCompanyManagement.ViewModels
 {
     internal class MainViewModel : INotifyPropertyChanged
     {

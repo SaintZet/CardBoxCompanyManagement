@@ -1,4 +1,4 @@
-﻿namespace CardBoxCompanyManagement.Application.StartupHelpers
+﻿namespace CardBoxCompanyManagement.StartupHelpers
 {
     internal interface IAbstractFactory<T>
     {

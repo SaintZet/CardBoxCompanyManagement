@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CardBoxCompanyManagement.Application.StartupHelpers
+namespace CardBoxCompanyManagement.StartupHelpers
 {
     internal static class ServiceExtensions
     {

@@ -1,7 +1,6 @@
-﻿namespace CardBoxCompanyManagement.Infrastructure
+﻿namespace CardBoxCompanyManagement.Infrastructure;
+
+public interface ICategoriesRepository
 {
-    public interface ICategoriesRepository
-    {
-        public Dictionary<string, string> GetAll();
-    }
+    public Dictionary<int, string> GetAll();
 }

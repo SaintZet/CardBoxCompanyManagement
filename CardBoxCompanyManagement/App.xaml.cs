@@ -1,48 +1,48 @@
-﻿using CardBoxCompanyManagement.Application.StartupHelpers;
-using CardBoxCompanyManagement.Application.View;
-using CardBoxCompanyManagement.Application.ViewModels;
+﻿using CardBoxCompanyManagement.StartupHelpers;
+using CardBoxCompanyManagement.View;
+using CardBoxCompanyManagement.ViewModels;
 using CardBoxCompanyManagement.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Windows;
 
-namespace CardBoxCompanyManagement.Application
+namespace CardBoxCompanyManagement;
+
+public partial class App : Application
 {
-    public partial class App : System.Windows.Application
+    public App()
     {
-        public App()
-        {
-            AppHost = Host.CreateDefaultBuilder()
-                .ConfigureServices((hostContext, services) =>
-                {
-                    services.AddSingleton(s => new MainWindow(s.GetRequiredService<MainViewModel>()));
-                    services.AddFormFactory<AddCompany>();
-                    services.AddTransient<MainViewModel>();
+        AppHost = Host.CreateDefaultBuilder()
+            .ConfigureServices((hostContext, services) =>
+            {
+                services.AddSingleton(s => new MainWindow(s.GetRequiredService<MainViewModel>()));
+                services.AddFormFactory<AddCompany>();
 
-                    services.AddSingleton<ICategoriesRepository, CategoriesRepository>();
-                    services.AddSingleton<ICompaniesRepository, CompaniesRepository>();
-                })
-                .Build();
-        }
+                services.AddTransient<MainViewModel>();
 
-        public static IHost? AppHost { get; private set; }
+                services.AddSingleton<ICategoriesRepository, CategoriesRepository>();
+                services.AddSingleton<ICompaniesRepository, CompaniesRepository>();
+            })
+            .Build();
+    }
 
-        protected override async void OnStartup(StartupEventArgs e)
-        {
-            await AppHost!.StartAsync();
+    public static IHost? AppHost { get; private set; }
 
-            var startupForm = AppHost.Services.GetRequiredService<MainWindow>();
-            startupForm.Show();
+    protected override async void OnStartup(StartupEventArgs e)
+    {
+        await AppHost!.StartAsync();
 
-            base.OnStartup(e);
-        }
+        var startupForm = AppHost.Services.GetRequiredService<MainWindow>();
+        startupForm.Show();
 
-        protected override async void OnExit(ExitEventArgs e)
-        {
-            await AppHost!.StopAsync();
-            AppHost.Dispose();
+        base.OnStartup(e);
+    }
 
-            base.OnExit(e);
-        }
+    protected override async void OnExit(ExitEventArgs e)
+    {
+        await AppHost!.StopAsync();
+        AppHost.Dispose();
+
+        base.OnExit(e);
     }
 }

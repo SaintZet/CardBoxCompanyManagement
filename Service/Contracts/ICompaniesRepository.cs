@@ -1,9 +1,6 @@
-﻿using CardBoxCompanyManagement.Domain;
+﻿namespace CardBoxCompanyManagement.Infrastructure;
 
-namespace CardBoxCompanyManagement.Infrastructure
+public interface ICompaniesRepository
 {
-    public interface ICompaniesRepository
-    {
-        public List<Company> GetAll();
-    }
+    public List<Company> GetAll();
 }
