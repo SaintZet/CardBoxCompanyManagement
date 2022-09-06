@@ -1,14 +1,14 @@
-﻿using CardBoxCompanyManagement.StartupHelpers;
+﻿using CardBoxCompanyManagement.Infrastructure;
+using CardBoxCompanyManagement.StartupHelpers;
 using CardBoxCompanyManagement.View;
 using CardBoxCompanyManagement.ViewModels;
-using CardBoxCompanyManagement.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Windows;
 
 namespace CardBoxCompanyManagement;
 
-public partial class App : Application
+public partial class App : System.Windows.Application
 {
     public App()
     {
@@ -16,7 +16,9 @@ public partial class App : Application
             .ConfigureServices((hostContext, services) =>
             {
                 services.AddSingleton(s => new MainWindow(s.GetRequiredService<MainViewModel>()));
+
                 services.AddFormFactory<AddCompany>();
+                services.AddFormFactory<EditCompany>();
 
                 services.AddTransient<MainViewModel>();
 

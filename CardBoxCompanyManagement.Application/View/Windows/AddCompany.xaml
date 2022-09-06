@@ -1,0 +1,29 @@
+﻿<Window x:Class="CardBoxCompanyManagement.View.AddCompany"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CardBoxCompanyManagement.View"
+        xmlns:controls="clr-namespace:CardBoxCompanyManagement.Application.View.UserControls"
+        mc:Ignorable="d"
+        Title="Add Company"
+        MinHeight="350"
+        Height="350"
+        MinWidth="400"
+        Width="400"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <controls:CompanyFields Grid.Row="0" />
+
+        <Button Grid.Row="1"
+                Content="Add"
+                HorizontalAlignment="Right"
+                Width="100"
+                Margin="10" />
+    </Grid>
+</Window>

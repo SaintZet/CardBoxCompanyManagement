@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:CardBoxCompanyManagement.View"
         mc:Ignorable="d"
         Title="Company Management"
+        WindowStartupLocation="CenterScreen"
         Height="450"
         MinHeight="350"
         Width="800"
@@ -67,11 +68,13 @@
                                     Width="60"
                                     Height="24"
                                     Margin="10"
-                                    Command="{Binding AddCompany}" />
+                                    Command="{Binding AddCompanyCommand}" />
                             <Button Content="Edit"
                                     Width="60"
                                     Height="24"
-                                    Margin="0" />
+                                    Margin="0"
+                                    CommandParameter="{Binding ElementName = CompaniesList, Path=SelectedItem}"
+                                    Command="{Binding EditCompanyCommand}" />
                             <Button Content="Delete"
                                     Width="60"
                                     Height="24"
@@ -79,13 +82,16 @@
                         </StackPanel>
                     </Grid>
                     <DataGrid Grid.Row="2"
+                              x:Name="CompaniesList"
                               CanUserAddRows="False"
                               CanUserDeleteRows="False"
                               CanUserResizeRows="False"
                               CanUserResizeColumns="False"
                               AutoGenerateColumns="False"
+                              IsReadOnly="True"
                               Margin="10,0,10,0"
-                              ItemsSource="{Binding DataList,ValidatesOnDataErrors=False,ValidatesOnExceptions=False,ValidatesOnNotifyDataErrors=False}">
+                              ItemsSource="{Binding DataList}"
+                              SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
                         <DataGrid.Columns>
                             <DataGridCheckBoxColumn Binding="{Binding WasReElected}" />
                             <DataGridTextColumn Header="Bulstat"
@@ -96,16 +102,15 @@
                                                 Binding="{Binding Category.Name}" />
                             <DataGridTextColumn Header="Summary"
                                                 Binding="{Binding Summary}" />
-                            <DataGridTextColumn Header="Image"
-                                                Binding="{Binding Image}" />
-                            <!--<DataGridTemplateColumn>
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <CheckBox IsChecked="{Binding IsSelected,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
-                                                  IsEnabled="{Binding IsSelectable,Mode=TwoWay}" />
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>-->
+                            <DataGridHyperlinkColumn Header="Image"
+                                                     Binding="{Binding Image}">
+                                <DataGridHyperlinkColumn.ElementStyle>
+                                    <Style>
+                                        <EventSetter Event="Hyperlink.Click"
+                                                     Handler="DG_Hyperlink_Click" />
+                                    </Style>
+                                </DataGridHyperlinkColumn.ElementStyle>
+                            </DataGridHyperlinkColumn>
                         </DataGrid.Columns>
                     </DataGrid>
                     <Grid Grid.Row="4"
