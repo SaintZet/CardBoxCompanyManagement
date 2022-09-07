@@ -5,12 +5,17 @@ namespace CardBoxCompanyManagement.Infrastructure;
 
 public class Company
 {
-    public Company(int ID, string Name, Category category, string summary)
+    public Company()
     {
-        this.ID = ID;
-        this.Name = Name;
-        Category = category;
-        Summary = summary;
+    }
+
+    public Company(Company company)
+    {
+        ID = company.ID;
+        Name = company.Name;
+        Category = company.Category;
+        Summary = company.Summary;
+        Image = company.Image;
     }
 
     [JsonProperty("bulstat")]
@@ -18,14 +23,14 @@ public class Company
     public int ID { get; set; }
 
     [JsonProperty("title")]
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
 
     [JsonProperty("category_id")]
     [JsonConverter(typeof(StringToCategoryConverter))]
-    public Category Category { get; set; }
+    public Category? Category { get; set; }
 
     [JsonProperty("summary")]
-    public string Summary { get; set; }
+    public string Summary { get; set; } = string.Empty;
 
     [JsonProperty("image")]
     public Uri? Image { get; set; } = null;

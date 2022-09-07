@@ -15,13 +15,11 @@ public partial class App : System.Windows.Application
         AppHost = Host.CreateDefaultBuilder()
             .ConfigureServices((hostContext, services) =>
             {
-                services.AddSingleton(s => new MainWindow(s.GetRequiredService<MainViewModel>()));
-
-                services.AddFormFactory<AddCompany>();
-                services.AddFormFactory<EditCompany>();
-
                 services.AddTransient<MainViewModel>();
 
+                services.AddSingleton(s => new MainWindow(s.GetRequiredService<MainViewModel>()));
+
+                services.AddSingleton<IWindowService, WindowService>();
                 services.AddSingleton<ICategoriesRepository, CategoriesRepository>();
                 services.AddSingleton<ICompaniesRepository, CompaniesRepository>();
             })

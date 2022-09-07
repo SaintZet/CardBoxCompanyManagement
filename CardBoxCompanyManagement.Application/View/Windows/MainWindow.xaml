@@ -73,12 +73,12 @@
                                     Width="60"
                                     Height="24"
                                     Margin="0"
-                                    CommandParameter="{Binding ElementName = CompaniesList, Path=SelectedItem}"
                                     Command="{Binding EditCompanyCommand}" />
                             <Button Content="Delete"
                                     Width="60"
                                     Height="24"
-                                    Margin="10" />
+                                    Margin="10"
+                                    Command="{Binding DeleteCompanyCommand}" />
                         </StackPanel>
                     </Grid>
                     <DataGrid Grid.Row="2"
@@ -91,9 +91,8 @@
                               IsReadOnly="True"
                               Margin="10,0,10,0"
                               ItemsSource="{Binding DataList}"
-                              SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
+                              SelectedItem="{Binding SelectedCompany}">
                         <DataGrid.Columns>
-                            <DataGridCheckBoxColumn Binding="{Binding WasReElected}" />
                             <DataGridTextColumn Header="Bulstat"
                                                 Binding="{Binding ID}" />
                             <DataGridTextColumn Header="Name"

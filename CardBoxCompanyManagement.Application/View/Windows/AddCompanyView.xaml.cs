@@ -3,11 +3,11 @@
 namespace CardBoxCompanyManagement.View
 {
     /// <summary>
-    /// Interaction logic for EditCompany.xaml
+    /// Interaction logic for AddCompany.xaml
     /// </summary>
-    public partial class EditCompany : Window
+    public partial class AddCompanyView : Window
     {
-        public EditCompany()
+        public AddCompanyView()
         {
             InitializeComponent();
         }

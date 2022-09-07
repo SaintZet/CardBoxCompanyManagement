@@ -29,7 +29,8 @@
                  Grid.Column="1"
                  VerticalContentAlignment="Center"
                  Margin="10"
-                 Height="24" />
+                 Height="24"
+                 Text="{Binding ID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <Label Grid.Row="1"
                Grid.Column="0"
@@ -39,7 +40,8 @@
                  Grid.Column="1"
                  VerticalContentAlignment="Center"
                  Margin="10"
-                 Height="24" />
+                 Height="24"
+                 Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <Label Grid.Row="2"
                Grid.Column="0"
@@ -59,7 +61,8 @@
                  Grid.Column="1"
                  Padding="5"
                  Margin="10"
-                 TextWrapping="Wrap" />
+                 TextWrapping="Wrap"
+                 Text="{Binding Summary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <Label Grid.Row="4"
                Grid.Column="0"
@@ -69,6 +72,7 @@
                  Grid.Column="1"
                  VerticalContentAlignment="Center"
                  Margin="10"
-                 Height="24" />
+                 Height="24"
+                 Text="{Binding Image, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
     </Grid>
 </UserControl>

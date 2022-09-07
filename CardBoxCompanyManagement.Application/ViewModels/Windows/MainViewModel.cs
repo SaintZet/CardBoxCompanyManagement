@@ -15,37 +15,53 @@ internal class MainViewModel : INotifyPropertyChanged
 {
     private readonly ICategoriesRepository category;
     private readonly ICompaniesRepository companies;
-
-    private readonly IAbstractFactory<AddCompany> addCompany;
-    private readonly IAbstractFactory<EditCompany> editCompany;
+    private readonly IWindowService windowService;
 
     private string search = string.Empty;
-    private Company selectedCompany;
+    private Company? selectedItem;
+    private List<Company> companiesView;
 
-    public MainViewModel(ICategoriesRepository category, ICompaniesRepository companies, IAbstractFactory<AddCompany> addCompany, IAbstractFactory<EditCompany> editCompany)
+    public MainViewModel(ICategoriesRepository category, ICompaniesRepository companies, IWindowService windowService)
     {
         this.category = category;
         this.companies = companies;
-        this.addCompany = addCompany;
-        this.editCompany = editCompany;
+        this.windowService = windowService;
 
-        Companies = companies.GetAll();
+        companiesView = companies.GetAll();
 
         DataList.Filter = new Predicate<object>(c => Filter((Company)c));
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    public List<Company> Companies { get; set; }
-
     public ICollectionView DataList
     {
-        get => CollectionViewSource.GetDefaultView(Companies);
+        get => CollectionViewSource.GetDefaultView(CompaniesView);
     }
 
     public string RecordsCount
     {
         get => DataList.Cast<object>().Count().ToString();
+    }
+
+    public List<Company> CompaniesView
+    {
+        get { return companiesView; }
+        set
+        {
+            companiesView = value;
+            OnPropertyChanged(nameof(CompaniesView));
+        }
+    }
+
+    public Company? SelectedCompany
+    {
+        get => selectedItem;
+        set
+        {
+            selectedItem = value;
+            OnPropertyChanged(nameof(SelectedCompany));
+        }
     }
 
     public string SearchCriteria
@@ -61,19 +77,39 @@ internal class MainViewModel : INotifyPropertyChanged
         }
     }
 
-    public ICommand AddCompanyCommand => new RelayCommand(execute: _ => addCompany.Create().Show());
-    public ICommand EditCompanyCommand => new RelayCommand(execute: EditCompanyWindow);
+    public ICommand AddCompanyCommand => new RelayCommand(execute: AddCompanyWindow);
+    public ICommand DeleteCompanyCommand => new RelayCommand(execute: DeleteCompanyWindow, _ => SelectedCompany != null);
+    public ICommand EditCompanyCommand => new RelayCommand(execute: EditCompanyWindow, _ => SelectedCompany != null);
 
     public void OnPropertyChanged(string prop = "")
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
     }
 
-    private void EditCompanyWindow(object obj)
+    private void AddCompanyWindow(object _)
     {
-        if (obj != null)
+        Company company = new();
+        if (windowService.AddWindow(company) == true)
         {
-            editCompany.Create().Show();
+            //companies.Add(company);
+        }
+    }
+
+    private void DeleteCompanyWindow(object _)
+    {
+        Company company = new(SelectedCompany!);
+        if (windowService.DeleteWindow(company) == true)
+        {
+            //companies.Delete();
+        }
+    }
+
+    private void EditCompanyWindow(object _)
+    {
+        Company company = new(SelectedCompany!);
+        if (windowService.EditWindow(company) == true)
+        {
+            //companies.Edit();
         }
     }
 
