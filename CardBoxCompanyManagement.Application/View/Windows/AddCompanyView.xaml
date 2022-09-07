@@ -18,8 +18,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <controls:CompanyFields Grid.Row="0"
-                                DataContext="{Binding Company}" />
+        <controls:CompanyFields />
 
         <Button Grid.Row="1"
                 Content="Add"

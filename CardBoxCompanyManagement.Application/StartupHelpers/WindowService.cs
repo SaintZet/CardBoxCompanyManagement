@@ -10,7 +10,7 @@ internal class WindowService : IWindowService
     {
         AddCompanyView window = new AddCompanyView
         {
-            DataContext = new CRUDCompanyViewModel(company)
+            DataContext = new CRUDCompanyViewModel(company, CRUDOperation.Add)
         };
 
         return window.ShowDialog();
@@ -20,7 +20,7 @@ internal class WindowService : IWindowService
     {
         DeleteCompanyView window = new DeleteCompanyView
         {
-            DataContext = new CRUDCompanyViewModel(company)
+            DataContext = new CRUDCompanyViewModel(company, CRUDOperation.Delete)
         };
 
         return window.ShowDialog();
@@ -30,7 +30,7 @@ internal class WindowService : IWindowService
     {
         EditCompanyView window = new()
         {
-            DataContext = new CRUDCompanyViewModel(company)
+            DataContext = new CRUDCompanyViewModel(company, CRUDOperation.Edit)
         };
 
         return window.ShowDialog();

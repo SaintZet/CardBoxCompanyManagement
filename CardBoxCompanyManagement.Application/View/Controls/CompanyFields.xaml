@@ -7,6 +7,19 @@
              mc:Ignorable="d"
              d:DesignHeight="350"
              d:DesignWidth="400">
+    <UserControl.Resources>
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="Background"
+                    Value="White" />
+            <Style.Triggers>
+                <Trigger Property="IsReadOnly"
+                         Value="True">
+                    <Setter Property="Background"
+                            Value="LightGray" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -30,7 +43,8 @@
                  VerticalContentAlignment="Center"
                  Margin="10"
                  Height="24"
-                 Text="{Binding ID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                 IsReadOnly="{Binding ReadOnlyID}"
+                 Text="{Binding Company.ID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <Label Grid.Row="1"
                Grid.Column="0"
@@ -41,7 +55,8 @@
                  VerticalContentAlignment="Center"
                  Margin="10"
                  Height="24"
-                 Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                 IsReadOnly="{Binding ReadOnlyName}"
+                 Text="{Binding Company.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <Label Grid.Row="2"
                Grid.Column="0"
@@ -51,7 +66,8 @@
                   Grid.Column="1"
                   VerticalContentAlignment="Center"
                   Margin="10"
-                  Height="24" />
+                  Height="24"
+                  IsReadOnly="{Binding ReadOnlyCategory}" />
 
         <Label Grid.Row="3"
                Grid.Column="0"
@@ -62,7 +78,8 @@
                  Padding="5"
                  Margin="10"
                  TextWrapping="Wrap"
-                 Text="{Binding Summary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                 IsReadOnly="{Binding ReadOnlySummary}"
+                 Text="{Binding Company.Summary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <Label Grid.Row="4"
                Grid.Column="0"
@@ -73,6 +90,7 @@
                  VerticalContentAlignment="Center"
                  Margin="10"
                  Height="24"
-                 Text="{Binding Image, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                 IsReadOnly="{Binding ReadOnlyImage}"
+                 Text="{Binding Company.Image, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
     </Grid>
 </UserControl>
