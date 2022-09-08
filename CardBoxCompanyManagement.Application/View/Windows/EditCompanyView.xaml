@@ -8,9 +8,10 @@
         mc:Ignorable="d"
         Title="Edit Company"
         MinHeight="350"
-        Height="350"
-        MinWidth="400"
-        Width="400"
+        MaxHeight="350"
+        MinWidth="450"
+        MaxWidth="450"
+        WindowStyle="ToolWindow"
         WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>

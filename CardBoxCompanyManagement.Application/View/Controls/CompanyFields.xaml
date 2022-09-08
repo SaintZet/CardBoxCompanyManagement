@@ -5,6 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:CardBoxCompanyManagement.Application.View.UserControls"
              mc:Ignorable="d"
+             MaxHeight="350"
+             MaxWidth="400"
              d:DesignHeight="350"
              d:DesignWidth="400">
     <UserControl.Resources>
@@ -41,8 +43,10 @@
         <TextBox Grid.Row="0"
                  Grid.Column="1"
                  VerticalContentAlignment="Center"
+                 HorizontalAlignment="Left"
                  Margin="10"
                  Height="24"
+                 Width="320"
                  IsReadOnly="{Binding ReadOnlyID}"
                  Text="{Binding Company.ID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
@@ -55,6 +59,7 @@
                  VerticalContentAlignment="Center"
                  Margin="10"
                  Height="24"
+                 Width="320"
                  IsReadOnly="{Binding ReadOnlyName}"
                  Text="{Binding Company.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
@@ -67,6 +72,7 @@
                   VerticalContentAlignment="Center"
                   Margin="10"
                   Height="24"
+                  Width="320"
                   ItemsSource="{Binding Categories}"
                   SelectedValuePath="Number"
                   DisplayMemberPath="Name"
@@ -81,6 +87,7 @@
                  Grid.Column="1"
                  Padding="5"
                  Margin="10"
+                 Width="320"
                  TextWrapping="Wrap"
                  IsReadOnly="{Binding ReadOnlySummary}"
                  Text="{Binding Company.Summary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -89,12 +96,21 @@
                Grid.Column="0"
                VerticalAlignment="Center"
                Content="Image" />
-        <TextBox Grid.Row="4"
-                 Grid.Column="1"
-                 VerticalContentAlignment="Center"
-                 Margin="10"
-                 Height="24"
-                 IsReadOnly="{Binding ReadOnlyImage}"
-                 Text="{Binding Company.Image, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="4"
+                    Grid.Column="1"
+                    Margin="10">
+            <TextBox VerticalContentAlignment="Center"
+                     Margin="0,0,0,0"
+                     Height="24"
+                     Width="300"
+                     IsReadOnly="{Binding ReadOnlyImage}"
+                     Text="{Binding Company.Image, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <Button Height="24"
+                    Width="20"
+                    Content=". . ."
+                    Command="{Binding BrowseImageCommand}">
+            </Button>
+        </StackPanel>
     </Grid>
 </UserControl>
