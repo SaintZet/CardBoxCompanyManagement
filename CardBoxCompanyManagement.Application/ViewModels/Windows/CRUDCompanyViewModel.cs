@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
@@ -31,23 +32,20 @@ internal class CRUDCompanyViewModel : INotifyPropertyChanged
     public Company Company
     {
         get => company!;
-        set
+        private set
         {
             company = value;
-            OnPropertyChanged(nameof(Company));
+            OnPropertyChanged();
         }
     }
 
     public Uri ImageUri
     {
-        get
-        {
-            return Company.Image.Uri;
-        }
+        get => Company.Image.Uri;
         set
         {
             Company.Image.Uri = value;
-            OnPropertyChanged(nameof(ImageUri));
+            OnPropertyChanged();
         }
     }
 
@@ -58,7 +56,7 @@ internal class CRUDCompanyViewModel : INotifyPropertyChanged
         {
             selectedCategory = value;
             Company.Category = Categories.First(c => c.Number == selectedCategory);
-            OnPropertyChanged(nameof(SelectedCategory));
+            OnPropertyChanged();
         }
     }
 
@@ -72,8 +70,7 @@ internal class CRUDCompanyViewModel : INotifyPropertyChanged
 
     public ICommand BrowseImageCommand => new RelayCommand(execute: BrowseImage, canExecute: _ => IsEnabledBrowseImage);
 
-    //TODO: Add execute if all textbox not null
-    public ICommand CompleteOperationCommand => new RelayCommand(execute: CompleteOperation, _ => true);
+    public ICommand CompleteOperationCommand => new RelayCommand(execute: CompleteOperation, canExecute: _ => !CompanyPropertiesIsNullOrWhiteSpace());
 
     public CRUDCompanyViewModel Load(Company company, CRUDOperation operation)
     {
@@ -103,9 +100,17 @@ internal class CRUDCompanyViewModel : INotifyPropertyChanged
         return this;
     }
 
-    public void OnPropertyChanged(string prop = "")
+    public void OnPropertyChanged([CallerMemberName] string prop = "")
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
+    }
+
+    private bool CompanyPropertiesIsNullOrWhiteSpace()
+    {
+        return string.IsNullOrWhiteSpace(Company.Name) |
+               string.IsNullOrWhiteSpace(Company.ID) |
+               string.IsNullOrWhiteSpace(Company.Summary) |
+               string.IsNullOrWhiteSpace(Company.Image.Uri?.ToString());
     }
 
     private void BrowseImage(object _)

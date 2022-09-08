@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows.Data;
 using System.Windows.Input;
 
@@ -44,7 +45,7 @@ internal class MainViewModel : INotifyPropertyChanged
         set
         {
             companiesView = value;
-            OnPropertyChanged(nameof(CompaniesView));
+            OnPropertyChanged();
         }
     }
 
@@ -54,7 +55,7 @@ internal class MainViewModel : INotifyPropertyChanged
         set
         {
             selectedItem = value;
-            OnPropertyChanged(nameof(SelectedCompany));
+            OnPropertyChanged();
         }
     }
 
@@ -75,7 +76,7 @@ internal class MainViewModel : INotifyPropertyChanged
     public ICommand DeleteCompanyCommand => new RelayCommand(execute: DeleteCompanyWindow, _ => SelectedCompany != null);
     public ICommand EditCompanyCommand => new RelayCommand(execute: EditCompanyWindow, _ => SelectedCompany != null);
 
-    public void OnPropertyChanged(string prop = "")
+    public void OnPropertyChanged([CallerMemberName] string prop = "")
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
     }
