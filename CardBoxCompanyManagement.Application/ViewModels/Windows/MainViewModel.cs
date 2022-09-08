@@ -11,18 +11,14 @@ namespace CardBoxCompanyManagement.ViewModels;
 
 internal class MainViewModel : INotifyPropertyChanged
 {
-    private readonly ICategoriesRepository category;
-    private readonly ICompaniesRepository companies;
     private readonly IWindowService windowService;
 
     private string search = string.Empty;
     private Company? selectedItem;
     private List<Company> companiesView;
 
-    public MainViewModel(ICategoriesRepository category, ICompaniesRepository companies, IWindowService windowService)
+    public MainViewModel(ICompaniesRepository companies, IWindowService windowService)
     {
-        this.category = category;
-        this.companies = companies;
         this.windowService = windowService;
 
         companiesView = companies.GetAll();

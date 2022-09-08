@@ -102,7 +102,7 @@
                             <DataGridTextColumn Header="Summary"
                                                 Binding="{Binding Summary}" />
                             <DataGridHyperlinkColumn Header="Image"
-                                                     Binding="{Binding Image}">
+                                                     Binding="{Binding Image.Uri}">
                                 <DataGridHyperlinkColumn.ElementStyle>
                                     <Style>
                                         <EventSetter Event="Hyperlink.Click"
