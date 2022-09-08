@@ -1,6 +1,7 @@
 ﻿using CardBoxCompanyManagement.Infrastructure;
 using CardBoxCompanyManagement.View;
 using CardBoxCompanyManagement.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CardBoxCompanyManagement.StartupHelpers;
 
@@ -8,9 +9,9 @@ internal class WindowService : IWindowService
 {
     public bool? AddWindow(Company company)
     {
-        AddCompanyView window = new AddCompanyView
+        AddCompanyView window = new()
         {
-            DataContext = new CRUDCompanyViewModel(company, CRUDOperation.Add)
+            DataContext = App.AppHost!.Services.GetRequiredService<CRUDCompanyViewModel>().Load(company, CRUDOperation.Add)
         };
 
         return window.ShowDialog();
@@ -18,9 +19,9 @@ internal class WindowService : IWindowService
 
     public bool? DeleteWindow(Company company)
     {
-        DeleteCompanyView window = new DeleteCompanyView
+        DeleteCompanyView window = new()
         {
-            DataContext = new CRUDCompanyViewModel(company, CRUDOperation.Delete)
+            DataContext = App.AppHost!.Services.GetRequiredService<CRUDCompanyViewModel>().Load(company, CRUDOperation.Delete)
         };
 
         return window.ShowDialog();
@@ -30,7 +31,7 @@ internal class WindowService : IWindowService
     {
         EditCompanyView window = new()
         {
-            DataContext = new CRUDCompanyViewModel(company, CRUDOperation.Edit)
+            DataContext = App.AppHost!.Services.GetRequiredService<CRUDCompanyViewModel>().Load(company, CRUDOperation.Edit)
         };
 
         return window.ShowDialog();

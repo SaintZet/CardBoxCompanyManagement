@@ -24,6 +24,8 @@
                 Content="Add"
                 HorizontalAlignment="Right"
                 Width="100"
-                Margin="10" />
+                Margin="10"
+                Command="{Binding CompleteOperationCommand}"
+                Click="Button_Click" />
     </Grid>
 </Window>

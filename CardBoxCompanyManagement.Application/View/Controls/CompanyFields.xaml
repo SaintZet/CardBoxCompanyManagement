@@ -15,7 +15,7 @@
                 <Trigger Property="IsReadOnly"
                          Value="True">
                     <Setter Property="Background"
-                            Value="LightGray" />
+                            Value="#FFF4F4F4" />
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -67,7 +67,11 @@
                   VerticalContentAlignment="Center"
                   Margin="10"
                   Height="24"
-                  IsReadOnly="{Binding ReadOnlyCategory}" />
+                  ItemsSource="{Binding Categories}"
+                  SelectedValuePath="Number"
+                  DisplayMemberPath="Name"
+                  SelectedValue="{Binding SelectedCategory}"
+                  IsEnabled="{Binding IsEnabledCategory}" />
 
         <Label Grid.Row="3"
                Grid.Column="0"
