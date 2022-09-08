@@ -2,5 +2,5 @@
 
 public interface ICategoriesRepository
 {
-    public Dictionary<int, string> GetAll();
+    public List<Category> Categories { get; }
 }

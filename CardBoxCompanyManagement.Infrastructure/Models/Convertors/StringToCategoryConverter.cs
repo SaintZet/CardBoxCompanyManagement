@@ -19,8 +19,8 @@ internal class StringToCategoryConverter : JsonConverter
     {
         int categoryNumber = (int)(long)reader.Value!;
 
-        var repo = new CategoriesRepository().GetAll();
+        var repo = new CategoriesRepository().Categories;
 
-        return new Category(categoryNumber, repo[categoryNumber]);
+        return repo.First(c => c.Number == categoryNumber);
     }
 }
