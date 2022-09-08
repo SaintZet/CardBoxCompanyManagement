@@ -70,7 +70,7 @@ internal class CRUDCompanyViewModel : INotifyPropertyChanged
 
     public ICommand BrowseImageCommand => new RelayCommand(execute: BrowseImage, canExecute: _ => IsEnabledBrowseImage);
 
-    public ICommand CompleteOperationCommand => new RelayCommand(execute: CompleteOperation, canExecute: _ => !CompanyPropertiesIsNullOrWhiteSpace());
+    public ICommand ButtonIsEnabledCommand => new RelayCommand(execute: _ => DoNothing(), canExecute: _ => !CompanyPropertiesIsNullOrWhiteSpace());
 
     public CRUDCompanyViewModel Load(Company company, CRUDOperation operation)
     {
@@ -105,6 +105,10 @@ internal class CRUDCompanyViewModel : INotifyPropertyChanged
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
     }
 
+    private void DoNothing()
+    {
+    }
+
     private bool CompanyPropertiesIsNullOrWhiteSpace()
     {
         return string.IsNullOrWhiteSpace(Company.Name) |
@@ -137,10 +141,5 @@ internal class CRUDCompanyViewModel : INotifyPropertyChanged
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-    }
-
-    private void CompleteOperation(object _)
-    {
-        var x = System.Windows.Interop.ComponentDispatcher.IsThreadModal;
     }
 }
