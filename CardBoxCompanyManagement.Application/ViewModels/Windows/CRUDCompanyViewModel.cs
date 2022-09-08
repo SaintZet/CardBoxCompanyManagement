@@ -64,15 +64,11 @@ internal class CRUDCompanyViewModel : INotifyPropertyChanged
 
     public List<Category> Categories { get; }
 
-    public bool ReadOnlyID { get; private set; }
-
-    public bool ReadOnlyName { get; private set; }
-
-    public bool IsEnabledCategory { get; private set; } = true;
-
-    public bool ReadOnlySummary { get; private set; }
-
     public bool IsEnabledBrowseImage { get; private set; } = true;
+    public bool IsEnabledCategory { get; private set; } = true;
+    public bool ReadOnlyID { get; private set; }
+    public bool ReadOnlyName { get; private set; }
+    public bool ReadOnlySummary { get; private set; }
 
     public ICommand BrowseImageCommand => new RelayCommand(execute: BrowseImage, canExecute: _ => IsEnabledBrowseImage);
 
@@ -90,11 +86,11 @@ internal class CRUDCompanyViewModel : INotifyPropertyChanged
                 break;
 
             case CRUDOperation.Delete:
+                IsEnabledBrowseImage = false;
+                IsEnabledCategory = false;
                 ReadOnlyID = true;
                 ReadOnlyName = true;
-                IsEnabledCategory = false;
                 ReadOnlySummary = true;
-                IsEnabledBrowseImage = false;
                 break;
 
             case CRUDOperation.Edit:
