@@ -2,5 +2,11 @@
 
 public interface ICompaniesRepository
 {
-    public List<Company> GetAll();
+    public List<Company> Get();
+
+    public bool Post(Company company);
+
+    public bool Delete(Company company);
+
+    public bool Put(Company company);
 }

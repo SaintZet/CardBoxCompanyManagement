@@ -1,5 +1,4 @@
 ﻿using CardBoxCompanyManagement.Infrastructure.Convertors;
-using CardBoxCompanyManagement.Infrastructure.Models.Convertors;
 using Newtonsoft.Json;
 
 namespace CardBoxCompanyManagement.Infrastructure;
@@ -30,7 +29,7 @@ public class Company
 
     [JsonProperty("category_id")]
     [JsonConverter(typeof(StringToCategoryConverter))]
-    public Category? Category { get; set; } = new CategoriesRepository().Categories.FirstOrDefault();
+    public Category Category { get; set; } = new CategoriesRepository().Categories.FirstOrDefault()!;
 
     [JsonProperty("image")]
     [JsonConverter(typeof(StringToImageConverter))]

@@ -78,6 +78,7 @@
                                     Width="60"
                                     Height="24"
                                     Margin="10"
+                                    IsEnabled="False"
                                     Command="{Binding DeleteCompanyCommand}" />
                         </StackPanel>
                     </Grid>

@@ -75,7 +75,7 @@ internal class CRUDCompanyViewModel : INotifyPropertyChanged
     public CRUDCompanyViewModel Load(Company company, CRUDOperation operation)
     {
         this.company = company;
-        SelectedCategory = company.Category!.Number;
+        SelectedCategory = company.Category.Number;
 
         switch (operation)
         {

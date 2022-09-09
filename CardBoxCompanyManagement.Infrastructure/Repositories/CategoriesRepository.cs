@@ -4,7 +4,7 @@ namespace CardBoxCompanyManagement.Infrastructure;
 
 public class CategoriesRepository : ICategoriesRepository
 {
-    private readonly Lazy<List<Category>> categories = new(GetCategories().Select(p => new Category(number: p.Key, name: p.Value)).ToList());
+    private static Lazy<List<Category>> categories = new(GetCategories().Select(p => new Category(number: p.Key, name: p.Value)).ToList());
 
     public List<Category> Categories => categories.Value;
 
@@ -12,7 +12,8 @@ public class CategoriesRepository : ICategoriesRepository
     {
         HttpRequest httpRequest = new("https://microinvest.cardbox.bg/categories/");
 
-        var response = httpRequest.Get();
+        Task<string> task = Task<string>.Factory.StartNew(() => httpRequest.Get());
+        var response = task.Result;
 
         var list = JsonConvert.DeserializeObject<List<Dictionary<int, string>>>(response);
 

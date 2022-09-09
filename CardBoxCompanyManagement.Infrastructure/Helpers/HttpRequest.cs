@@ -15,18 +15,40 @@ internal class HttpRequest
     public string Get(object? obj = null)
     {
         string data = JsonConvert.SerializeObject(obj ?? "", Formatting.Indented);
-        var response = Request(HttpMethod.Get, data);
+
+        var response = Request(HttpMethod.Get, data).Result;
 
         return response.Content.ReadAsStringAsync().Result;
     }
 
-    public void Put(object obj) => Request(HttpMethod.Put, JsonConvert.SerializeObject(obj, Formatting.Indented));
+    public bool Put(object obj)
+    {
+        string body = JsonConvert.SerializeObject(obj, Formatting.Indented);
 
-    public void Post(object obj) => Request(HttpMethod.Post, JsonConvert.SerializeObject(obj, Formatting.Indented));
+        var response = Request(HttpMethod.Put, body).Result;
 
-    public void Delete(object obj) => Request(HttpMethod.Delete, JsonConvert.SerializeObject(obj, Formatting.Indented));
+        return response.StatusCode == System.Net.HttpStatusCode.OK;
+    }
 
-    private HttpResponseMessage Request(HttpMethod method, string data)
+    public bool Post(object obj)
+    {
+        string body = JsonConvert.SerializeObject(obj, Formatting.Indented);
+
+        var response = Request(HttpMethod.Post, body).Result;
+
+        return response.StatusCode == System.Net.HttpStatusCode.OK;
+    }
+
+    public bool Delete(object obj)
+    {
+        string body = JsonConvert.SerializeObject(obj, Formatting.Indented);
+
+        var response = Request(HttpMethod.Delete, body).Result;
+
+        return response.StatusCode == System.Net.HttpStatusCode.OK;
+    }
+
+    private async Task<HttpResponseMessage> Request(HttpMethod method, string data)
     {
         var request = new HttpRequestMessage
         {
@@ -35,6 +57,6 @@ internal class HttpRequest
             Content = new StringContent(data, Encoding.UTF8, "application/json")
         };
 
-        return client.SendAsync(request).Result;
+        return await client.SendAsync(request);
     }
 }

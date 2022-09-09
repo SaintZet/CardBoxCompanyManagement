@@ -12,6 +12,7 @@ namespace CardBoxCompanyManagement.ViewModels;
 
 internal class MainViewModel : INotifyPropertyChanged
 {
+    private readonly ICompaniesRepository companies;
     private readonly IWindowService windowService;
 
     private string search = string.Empty;
@@ -20,9 +21,10 @@ internal class MainViewModel : INotifyPropertyChanged
 
     public MainViewModel(ICompaniesRepository companies, IWindowService windowService)
     {
+        this.companies = companies;
         this.windowService = windowService;
 
-        companiesView = companies.GetAll();
+        companiesView = companies.Get();
 
         DataList.Filter = new Predicate<object>(c => Filter((Company)c));
     }
@@ -45,7 +47,10 @@ internal class MainViewModel : INotifyPropertyChanged
         set
         {
             companiesView = value;
-            OnPropertyChanged();
+            OnPropertyChanged(nameof(CompaniesView));
+
+            DataList.Filter = new Predicate<object>(c => Filter((Company)c));
+            OnPropertyChanged(nameof(DataList));
         }
     }
 
@@ -86,7 +91,9 @@ internal class MainViewModel : INotifyPropertyChanged
         Company company = new();
         if (windowService.AddWindow(company) == true)
         {
-            //companies.Add(company);
+            companies.Post(company);
+
+            CompaniesView = companies.Get();
         }
     }
 
@@ -95,7 +102,9 @@ internal class MainViewModel : INotifyPropertyChanged
         Company company = new(SelectedCompany!);
         if (windowService.DeleteWindow(company) == true)
         {
-            //companies.Delete();
+            companies.Delete(company);
+
+            CompaniesView = companies.Get();
         }
     }
 
@@ -104,7 +113,9 @@ internal class MainViewModel : INotifyPropertyChanged
         Company company = new(SelectedCompany!);
         if (windowService.EditWindow(company) == true)
         {
-            //companies.Edit();
+            companies.Put(company);
+
+            CompaniesView = companies.Get();
         }
     }
 
