@@ -3,11 +3,11 @@ using Newtonsoft.Json;
 
 namespace CardBoxCompanyManagement.Infrastructure;
 
-internal class HttpRequest
+internal class HttpRequestManager
 {
     private readonly HttpClient client = new();
 
-    public HttpRequest(string url)
+    public HttpRequestManager(string url)
     {
         client.DefaultRequestHeaders.Add("URL", url);
     }
@@ -16,39 +16,12 @@ internal class HttpRequest
     {
         string data = JsonConvert.SerializeObject(obj ?? "", Formatting.Indented);
 
-        var response = Request(HttpMethod.Get, data).Result;
+        var response = Request(HttpMethod.Get, data);
 
         return response.Content.ReadAsStringAsync().Result;
     }
 
-    public bool Put(object obj)
-    {
-        string body = JsonConvert.SerializeObject(obj, Formatting.Indented);
-
-        var response = Request(HttpMethod.Put, body).Result;
-
-        return response.StatusCode == System.Net.HttpStatusCode.OK;
-    }
-
-    public bool Post(object obj)
-    {
-        string body = JsonConvert.SerializeObject(obj, Formatting.Indented);
-
-        var response = Request(HttpMethod.Post, body).Result;
-
-        return response.StatusCode == System.Net.HttpStatusCode.OK;
-    }
-
-    public bool Delete(object obj)
-    {
-        string body = JsonConvert.SerializeObject(obj, Formatting.Indented);
-
-        var response = Request(HttpMethod.Delete, body).Result;
-
-        return response.StatusCode == System.Net.HttpStatusCode.OK;
-    }
-
-    private async Task<HttpResponseMessage> Request(HttpMethod method, string data)
+    public HttpResponseMessage Request(HttpMethod method, string data)
     {
         var request = new HttpRequestMessage
         {
@@ -57,6 +30,6 @@ internal class HttpRequest
             Content = new StringContent(data, Encoding.UTF8, "application/json")
         };
 
-        return await client.SendAsync(request);
+        return client.SendAsync(request).Result;
     }
 }
