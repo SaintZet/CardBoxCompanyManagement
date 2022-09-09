@@ -3,7 +3,7 @@ using CardBoxCompanyManagement.View;
 using CardBoxCompanyManagement.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CardBoxCompanyManagement.StartupHelpers;
+namespace CardBoxCompanyManagement.Services;
 
 internal class WindowService : IWindowService
 {

@@ -1,6 +1,6 @@
 ﻿using CardBoxCompanyManagement.Infrastructure;
 
-namespace CardBoxCompanyManagement.StartupHelpers;
+namespace CardBoxCompanyManagement.Services;
 
 internal interface IWindowService
 {
