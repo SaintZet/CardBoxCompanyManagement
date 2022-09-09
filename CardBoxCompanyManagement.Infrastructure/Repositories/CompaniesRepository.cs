@@ -4,7 +4,7 @@ namespace CardBoxCompanyManagement.Infrastructure;
 
 public class CompaniesRepository : ICompaniesRepository
 {
-    public List<Company> GetAll()
+    public List<Company> Get()
     {
         List<Company> companies = new();
 
@@ -17,5 +17,26 @@ public class CompaniesRepository : ICompaniesRepository
         }
 
         return companies;
+    }
+
+    public void Delete(Company company)
+    {
+        HttpRequest httpRequest = new("https://microinvest.cardbox.bg/company/");
+
+        httpRequest.Put(company);
+    }
+
+    public void Post(Company company)
+    {
+        HttpRequest httpRequest = new("https://microinvest.cardbox.bg/company/");
+
+        httpRequest.Put(company);
+    }
+
+    public void Put(Company company)
+    {
+        HttpRequest httpRequest = new("https://microinvest.cardbox.bg/company/");
+
+        httpRequest.Put(company);
     }
 }

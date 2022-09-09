@@ -4,7 +4,7 @@ namespace CardBoxCompanyManagement.Infrastructure;
 
 public class CategoriesRepository : ICategoriesRepository
 {
-    private readonly Lazy<List<Category>> categories = new(GetCategories().Select(p => new Category(number: p.Key, name: p.Value)).ToList());
+    private static Lazy<List<Category>> categories = new(GetCategories().Select(p => new Category(number: p.Key, name: p.Value)).ToList());
 
     public List<Category> Categories => categories.Value;
 

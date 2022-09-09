@@ -12,19 +12,19 @@ namespace CardBoxCompanyManagement.ViewModels;
 
 internal class MainViewModel : INotifyPropertyChanged
 {
+    private readonly ICompaniesRepository companies;
     private readonly IWindowService windowService;
 
     private string search = string.Empty;
     private Company? selectedItem;
-    private List<Company> companiesView;
+    private List<Company>? companiesView;
 
     public MainViewModel(ICompaniesRepository companies, IWindowService windowService)
     {
+        this.companies = companies;
         this.windowService = windowService;
 
-        companiesView = companies.GetAll();
-
-        DataList.Filter = new Predicate<object>(c => Filter((Company)c));
+        CompaniesView = companies.Get();
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -41,11 +41,14 @@ internal class MainViewModel : INotifyPropertyChanged
 
     public List<Company> CompaniesView
     {
-        get { return companiesView; }
+        get { return companiesView!; }
         set
         {
             companiesView = value;
-            OnPropertyChanged();
+            OnPropertyChanged(nameof(CompaniesView));
+
+            DataList.Filter = new Predicate<object>(c => Filter((Company)c));
+            OnPropertyChanged(nameof(DataList));
         }
     }
 
@@ -86,7 +89,8 @@ internal class MainViewModel : INotifyPropertyChanged
         Company company = new();
         if (windowService.AddWindow(company) == true)
         {
-            //companies.Add(company);
+            companies.Post(company);
+            CompaniesView = companies.Get();
         }
     }
 
@@ -95,7 +99,8 @@ internal class MainViewModel : INotifyPropertyChanged
         Company company = new(SelectedCompany!);
         if (windowService.DeleteWindow(company) == true)
         {
-            //companies.Delete();
+            companies.Delete(company);
+            CompaniesView = companies.Get();
         }
     }
 
@@ -104,7 +109,8 @@ internal class MainViewModel : INotifyPropertyChanged
         Company company = new(SelectedCompany!);
         if (windowService.EditWindow(company) == true)
         {
-            //companies.Edit();
+            companies.Put(company);
+            CompaniesView = companies.Get();
         }
     }
 
