@@ -17,16 +17,14 @@ internal class MainViewModel : INotifyPropertyChanged
 
     private string search = string.Empty;
     private Company? selectedItem;
-    private List<Company> companiesView;
+    private List<Company>? companiesView;
 
     public MainViewModel(ICompaniesRepository companies, IWindowService windowService)
     {
         this.companies = companies;
         this.windowService = windowService;
 
-        companiesView = companies.Get();
-
-        DataList.Filter = new Predicate<object>(c => Filter((Company)c));
+        CompaniesView = companies.Get();
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -43,7 +41,7 @@ internal class MainViewModel : INotifyPropertyChanged
 
     public List<Company> CompaniesView
     {
-        get { return companiesView; }
+        get { return companiesView!; }
         set
         {
             companiesView = value;
@@ -92,7 +90,6 @@ internal class MainViewModel : INotifyPropertyChanged
         if (windowService.AddWindow(company) == true)
         {
             companies.Post(company);
-
             CompaniesView = companies.Get();
         }
     }
@@ -103,7 +100,6 @@ internal class MainViewModel : INotifyPropertyChanged
         if (windowService.DeleteWindow(company) == true)
         {
             companies.Delete(company);
-
             CompaniesView = companies.Get();
         }
     }
@@ -114,7 +110,6 @@ internal class MainViewModel : INotifyPropertyChanged
         if (windowService.EditWindow(company) == true)
         {
             companies.Put(company);
-
             CompaniesView = companies.Get();
         }
     }

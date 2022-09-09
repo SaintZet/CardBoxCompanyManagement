@@ -21,30 +21,24 @@ public class CompaniesRepository : ICompaniesRepository
         return companies;
     }
 
-    public bool Post(Company company)
+    public void Delete(Company company)
     {
         HttpRequest httpRequest = new("https://microinvest.cardbox.bg/company/");
 
-        Task<bool> task = Task<bool>.Factory.StartNew(() => httpRequest.Post(company));
-
-        return task.Result;
+        httpRequest.Put(company);
     }
 
-    public bool Put(Company company)
+    public void Post(Company company)
     {
         HttpRequest httpRequest = new("https://microinvest.cardbox.bg/company/");
 
-        Task<bool> task = Task<bool>.Factory.StartNew(() => httpRequest.Put(company));
-
-        return task.Result;
+        httpRequest.Put(company);
     }
 
-    public bool Delete(Company company)
+    public void Put(Company company)
     {
         HttpRequest httpRequest = new("https://microinvest.cardbox.bg/company/");
 
-        Task<bool> task = Task<bool>.Factory.StartNew(() => httpRequest.Delete(new { bulstat = company.ID }));
-
-        return task.Result;
+        httpRequest.Put(company);
     }
 }

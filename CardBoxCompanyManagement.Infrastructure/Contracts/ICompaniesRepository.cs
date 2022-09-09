@@ -4,9 +4,9 @@ public interface ICompaniesRepository
 {
     public List<Company> Get();
 
-    public bool Post(Company company);
+    public void Delete(Company company);
 
-    public bool Delete(Company company);
+    public void Post(Company company);
 
-    public bool Put(Company company);
+    public void Put(Company company);
 }
