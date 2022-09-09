@@ -1,4 +1,5 @@
 ﻿using CardBoxCompanyManagement.Infrastructure;
+using CardBoxCompanyManagement.ViewModels.Validators;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,10 +18,11 @@ public enum CRUDOperation
     Edit
 }
 
-internal class CRUDCompanyViewModel : INotifyPropertyChanged
+internal class CRUDCompanyViewModel : INotifyPropertyChanged, IDataErrorInfo
 {
     private Company? company;
     private int selectedCategory;
+    private bool idHasError;
 
     public CRUDCompanyViewModel(ICategoriesRepository categories)
     {
@@ -28,6 +30,16 @@ internal class CRUDCompanyViewModel : INotifyPropertyChanged
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
+
+    public string ID
+    {
+        get => company!.ID;
+        set
+        {
+            company!.ID = value;
+            OnPropertyChanged();
+        }
+    }
 
     public Company Company
     {
@@ -70,7 +82,17 @@ internal class CRUDCompanyViewModel : INotifyPropertyChanged
 
     public ICommand BrowseImageCommand => new RelayCommand(execute: BrowseImage, canExecute: _ => IsEnabledBrowseImage);
 
-    public ICommand ButtonIsEnabledCommand => new RelayCommand(execute: _ => DoNothing(), canExecute: _ => !CompanyPropertiesIsNullOrWhiteSpace());
+    public ICommand ButtonIsEnabledCommand => new RelayCommand(execute: _ => DoNothing(), canExecute: _ => !CompanyPropertiesIsNullOrWhiteSpace() && !idHasError);
+
+    public string Error => "Bulstat invalid!";
+
+    public string this[string columnName]
+    {
+        get
+        {
+            return Validate(columnName);
+        }
+    }
 
     public CRUDCompanyViewModel Load(Company company, CRUDOperation operation)
     {
@@ -103,6 +125,18 @@ internal class CRUDCompanyViewModel : INotifyPropertyChanged
     public void OnPropertyChanged([CallerMemberName] string prop = "")
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
+    }
+
+    private string Validate(string propertyName)
+    {
+        switch (propertyName)
+        {
+            case nameof(ID):
+                idHasError = !EIKValidator.Validate(ID);
+                return idHasError ? "Error" : string.Empty;
+        }
+
+        return string.Empty;
     }
 
     private void DoNothing()
