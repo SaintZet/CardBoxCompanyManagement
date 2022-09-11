@@ -133,24 +133,28 @@
                         <Grid Grid.Column="1">
                             <Border HorizontalAlignment="Center">
                                 <StackPanel Orientation="Horizontal">
-                                    <Button Width="40"
+                                    <Button Content="|&lt;"
+                                            Width="40"
                                             Margin="5,0,5,0"
-                                            Content="|&lt;" />
+                                            Command="{Binding FirstPage}" />
                                     <Button Content="&lt;"
                                             Width="40"
-                                            Margin="5,0,5,0" />
+                                            Margin="5,0,5,0"
+                                            Command="{Binding PreviousPage}" />
                                     <Border BorderThickness="1"
                                             BorderBrush="Black">
-                                        <TextBlock Text="1"
+                                        <TextBlock Text="{Binding CurrentPage}"
                                                    Margin="10,0,10,0"
                                                    VerticalAlignment="Center" />
                                     </Border>
-                                    <Button Width="40"
+                                    <Button Content="&gt;"
+                                            Width="40"
                                             Margin="5,0,5,0"
-                                            Content="&gt;" />
+                                            Command="{Binding NextPage}" />
                                     <Button Content="&gt;|"
                                             Width="40"
-                                            Margin="5,0,5,0" />
+                                            Margin="5,0,5,0"
+                                            Command="{Binding LastPage}" />
                                 </StackPanel>
                             </Border>
                         </Grid>
@@ -160,7 +164,8 @@
                                 <Label Content="Page Size"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center" />
-                                <ComboBox></ComboBox>
+                                <ComboBox ItemsSource="{Binding NumberOfRecords}"
+                                          SelectedItem="{Binding SelectedPageSize}" />
                             </StackPanel>
                         </Grid>
                     </Grid>
