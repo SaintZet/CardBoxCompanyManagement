@@ -27,6 +27,7 @@
                 Width="100"
                 Margin="10"
                 Command="{Binding ButtonIsEnabledCommand}"
+                IsDefault="True"
                 Click="Button_Click" />
     </Grid>
 </Window>

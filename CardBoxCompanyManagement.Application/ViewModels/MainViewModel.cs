@@ -1,26 +1,23 @@
 ﻿using CardBoxCompanyManagement.Infrastructure;
 using CardBoxCompanyManagement.Services;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Windows.Data;
 using System.Windows.Input;
 
 namespace CardBoxCompanyManagement.ViewModels;
 
 internal class MainViewModel : INotifyPropertyChanged
 {
-    private static Paging PagedTable = new();
+    private static List<int> pageSizes = new() { 10, 15, 30, 50 };
+    private readonly Paging<Company> pagingManager = new();
     private readonly ICompaniesRepository companies;
     private readonly IWindowService windowService;
-    private Company? selectedItem;
-    private int selectedPageSize;
-    private List<Company> companiesView;
-    private List<Company> pagedList;
-    private List<int> pageSize = new List<int> { 2, 10, 15, 30, 50 };
+    private int selectedPageSize = pageSizes[0];
+    private List<Company> allCompanies;
+    private List<Company> filteredCompanies;
+    private List<Company> pagedCompanies;
     private string search = string.Empty;
 
     public MainViewModel(ICompaniesRepository companies, IWindowService windowService)
@@ -28,107 +25,65 @@ internal class MainViewModel : INotifyPropertyChanged
         this.companies = companies;
         this.windowService = windowService;
 
-        companiesView = companies.Get();
-        selectedPageSize = pageSize[0];
-        for (int i = 0; i < 100; i++)
-        {
-            companiesView.Add(new Company(companiesView[0]));
-        }
+        allCompanies = companies.Get();
+        filteredCompanies = allCompanies;
 
-        PagedTable.PageIndex = 0;
-        PagedList = PagedTable.SetPaging(companiesView, SelectedPageSize);
+        pagingManager.PageIndex = 0;
+        pagedCompanies = pagingManager.SetPaging(filteredCompanies, SelectedPageSize);
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    public List<Company> PagedList
+    public List<Company> AllCompanies
     {
-        get { return pagedList; }
+        get => allCompanies!;
         set
         {
-            if (pagedList != value)
+            allCompanies = value;
+            filteredCompanies = Filtered(allCompanies);
+
+            PagedCompaniesRefresh();
+            OnPropertyChanged(nameof(RecordsCount));
+        }
+    }
+    public List<Company> PagedCompanies
+    {
+        get => pagedCompanies;
+        set
+        {
+            if (pagedCompanies != value)
             {
-                pagedList = value;
-                OnPropertyChanged(nameof(PagedList));
-
+                pagedCompanies = value;
+                OnPropertyChanged(nameof(PagedCompanies));
                 OnPropertyChanged(nameof(CurrentPage));
-
-                DataList.Filter = new Predicate<object>(c => Filter((Company)c));
-                OnPropertyChanged(nameof(DataList));
             }
         }
     }
-
-    public ICollectionView DataList
-    {
-        get => CollectionViewSource.GetDefaultView(PagedList);
-    }
-
-    //public DataTable DataList
-    //{
-    //    get => dataList;
-    //    set
-    //    {
-    //        dataList = value;
-    //        OnPropertyChanged(nameof(CurrentPage));
-    //        OnPropertyChanged();
-    //    }
-    //}
-    public int RecordsCount { get => companiesView.Count; }
-
-    public int CurrentPage
-    {
-        get => PagedTable.PageIndex + 1;
-    }
-
+    public int CurrentPage => pagingManager.PageIndex + 1;
+    public int RecordsCount => allCompanies.Count;
+    public List<int> PageSizes => pageSizes;
     public int SelectedPageSize
     {
-        get { return selectedPageSize; }
+        get => selectedPageSize;
         set
         {
             if (selectedPageSize != value)
             {
                 selectedPageSize = value;
-                OnPropertyChanged(nameof(SelectedPageSize));
-
-                PagedRefresh();
+                PagedCompaniesRefresh();
             }
         }
     }
-
-    public List<int> NumberOfRecords => pageSize;
-
-    public List<Company> CompaniesView
-    {
-        get { return companiesView!; }
-        set
-        {
-            companiesView = value;
-            OnPropertyChanged(nameof(CompaniesView));
-            OnPropertyChanged(nameof(RecordsCount));
-        }
-    }
-
-    public Company? SelectedCompany
-    {
-        get => selectedItem;
-        set
-        {
-            selectedItem = value;
-            OnPropertyChanged();
-        }
-    }
-
+    public Company? SelectedCompany { get; set; }
     public string SearchCriteria
     {
-        get { return search; }
+        get => search;
         set
         {
             search = value;
-            OnPropertyChanged(nameof(SearchCriteria));
+            filteredCompanies = value != string.Empty ? Filtered(allCompanies) : allCompanies;
 
-            DataList.Refresh();
-            PagedRefresh();
+            PagedCompaniesRefresh();
         }
     }
 
@@ -138,23 +93,17 @@ internal class MainViewModel : INotifyPropertyChanged
 
     public ICommand EditCompanyCommand => new RelayCommand(execute: EditCompanyWindow, _ => SelectedCompany != null);
 
-    public ICommand NextPage => new RelayCommand(execute: (_) => PagedList = PagedTable.Next(companiesView, SelectedPageSize));
+    public ICommand NextPage => new RelayCommand(execute: (_) => PagedCompanies = pagingManager.Next(filteredCompanies, selectedPageSize));
 
-    public ICommand PreviousPage => new RelayCommand(execute: (_) => PagedList = PagedTable.Previous(companiesView, SelectedPageSize));
+    public ICommand PreviousPage => new RelayCommand(execute: (_) => PagedCompanies = pagingManager.Previous(filteredCompanies, selectedPageSize));
 
-    public ICommand FirstPage => new RelayCommand(execute: (_) => PagedList = PagedTable.First(companiesView, SelectedPageSize));
+    public ICommand FirstPage => new RelayCommand(execute: (_) => PagedCompanies = pagingManager.First(filteredCompanies, selectedPageSize));
 
-    public ICommand LastPage => new RelayCommand(execute: (_) => PagedList = PagedTable.Last(companiesView, SelectedPageSize));
+    public ICommand LastPage => new RelayCommand(execute: (_) => PagedCompanies = pagingManager.Last(filteredCompanies, selectedPageSize));
 
     public void OnPropertyChanged([CallerMemberName] string prop = "")
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
-    }
-
-    private void PagedRefresh()
-    {
-        PagedTable.PageIndex = 0;
-        PagedList = PagedTable.First(companiesView, selectedPageSize);
     }
 
     private void AddCompanyWindow(object _)
@@ -163,7 +112,7 @@ internal class MainViewModel : INotifyPropertyChanged
         if (windowService.AddWindow(company) == true)
         {
             companies.Post(company);
-            CompaniesView = companies.Get();
+            AllCompanies = companies.Get();
         }
     }
 
@@ -173,7 +122,7 @@ internal class MainViewModel : INotifyPropertyChanged
         if (windowService.DeleteWindow(company) == true)
         {
             companies.Delete(company);
-            CompaniesView = companies.Get();
+            AllCompanies = companies.Get();
         }
     }
 
@@ -183,14 +132,18 @@ internal class MainViewModel : INotifyPropertyChanged
         if (windowService.EditWindow(company) == true)
         {
             companies.Put(company);
-            CompaniesView = companies.Get();
+            AllCompanies = companies.Get();
         }
     }
 
-    private bool Filter(Company company)
+    private List<Company> Filtered(List<Company> allCompanies)
     {
-        return SearchCriteria == null
-            || company.ID.IndexOf(SearchCriteria, StringComparison.OrdinalIgnoreCase) != -1
-            || company.Name.IndexOf(SearchCriteria, StringComparison.OrdinalIgnoreCase) != -1;
+        return allCompanies.FindAll(c => c.Name.Contains(search) || c.ID.Contains(search)).ToList();
+    }
+
+    private void PagedCompaniesRefresh()
+    {
+        pagingManager.PageIndex = 0;
+        PagedCompanies = pagingManager.First(filteredCompanies, selectedPageSize);
     }
 }

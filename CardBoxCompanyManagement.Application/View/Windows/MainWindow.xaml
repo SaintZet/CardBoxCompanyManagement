@@ -91,7 +91,7 @@
                               AutoGenerateColumns="False"
                               IsReadOnly="True"
                               Margin="10,0,10,0"
-                              ItemsSource="{Binding DataList}"
+                              ItemsSource="{Binding PagedCompanies}"
                               SelectedItem="{Binding SelectedCompany}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Bulstat"
@@ -164,7 +164,7 @@
                                 <Label Content="Page Size"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center" />
-                                <ComboBox ItemsSource="{Binding NumberOfRecords}"
+                                <ComboBox ItemsSource="{Binding PageSizes}"
                                           SelectedItem="{Binding SelectedPageSize}" />
                             </StackPanel>
                         </Grid>

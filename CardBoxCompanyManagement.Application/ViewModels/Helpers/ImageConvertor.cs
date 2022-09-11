@@ -2,7 +2,7 @@
 using System.IO;
 using System.Windows.Media.Imaging;
 
-namespace CardBoxCompanyManagement;
+namespace CardBoxCompanyManagement.ViewModels;
 
 public static class ImageConvertor
 {
