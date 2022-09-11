@@ -15,7 +15,11 @@ internal class Paging
     /// <summary>
     /// Current Page Index Number
     /// </summary>
-    public int PageIndex { get; set; }
+    public int PageIndex
+    {
+        get;
+        set;
+    }
 
     //Initialize a DataTable Locally
 
@@ -25,15 +29,14 @@ internal class Paging
     /// <param name="ListToPage"> </param>
     /// <param name="RecordsPerPage"> </param>
     /// <returns> DataTable </returns>
-    public DataTable Next(IList<Company> ListToPage, int RecordsPerPage)
+    public List<Company> Next(IList<Company> ListToPage, int RecordsPerPage)
     {
         PageIndex++;
         if (PageIndex >= ListToPage.Count / RecordsPerPage)
         {
             PageIndex = ListToPage.Count / RecordsPerPage;
         }
-        PagedList = SetPaging(ListToPage, RecordsPerPage);
-        return PagedList;
+        return SetPaging(ListToPage, RecordsPerPage);
     }
 
     /// <summary>
@@ -42,15 +45,14 @@ internal class Paging
     /// <param name="ListToPage"> </param>
     /// <param name="RecordsPerPage"> </param>
     /// <returns> DataTable </returns>
-    public DataTable Previous(IList<Company> ListToPage, int RecordsPerPage)
+    public List<Company> Previous(IList<Company> ListToPage, int RecordsPerPage)
     {
         PageIndex--;
         if (PageIndex <= 0)
         {
             PageIndex = 0;
         }
-        PagedList = SetPaging(ListToPage, RecordsPerPage);
-        return PagedList;
+        return SetPaging(ListToPage, RecordsPerPage);
     }
 
     /// <summary>
@@ -59,11 +61,10 @@ internal class Paging
     /// <param name="ListToPage"> </param>
     /// <param name="RecordsPerPage"> </param>
     /// <returns> DataTable </returns>
-    public DataTable First(IList<Company> ListToPage, int RecordsPerPage)
+    public List<Company> First(IList<Company> ListToPage, int RecordsPerPage)
     {
         PageIndex = 0;
-        PagedList = SetPaging(ListToPage, RecordsPerPage);
-        return PagedList;
+        return SetPaging(ListToPage, RecordsPerPage);
     }
 
     /// <summary>
@@ -72,11 +73,10 @@ internal class Paging
     /// <param name="ListToPage"> </param>
     /// <param name="RecordsPerPage"> </param>
     /// <returns> DataTable </returns>
-    public DataTable Last(IList<Company> ListToPage, int RecordsPerPage)
+    public List<Company> Last(IList<Company> ListToPage, int RecordsPerPage)
     {
         PageIndex = ListToPage.Count / RecordsPerPage;
-        PagedList = SetPaging(ListToPage, RecordsPerPage);
-        return PagedList;
+        return SetPaging(ListToPage, RecordsPerPage);
     }
 
     /// <summary>
@@ -85,14 +85,11 @@ internal class Paging
     /// <param name="ListToPage"> </param>
     /// <param name="RecordsPerPage"> </param>
     /// <returns> DataTable </returns>
-    public DataTable SetPaging(IList<Company> ListToPage, int RecordsPerPage)
+    public List<Company> SetPaging(IList<Company> ListToPage, int RecordsPerPage)
     {
         int PageGroup = PageIndex * RecordsPerPage;
 
-        IList<Company> PagedList = ListToPage.Skip(PageGroup).Take(RecordsPerPage).ToList();
-        //This is where the Magic Happens. If you have a Specific sort or want to return ONLY a specific set of columns, add it to this LINQ Query.
-
-        return PagedTable(PagedList);
+        return ListToPage.Skip(PageGroup).Take(RecordsPerPage).ToList();
     }
 
     //If youre paging say 30,000 rows and you know the processors of the users will be slow you can ASync thread both of these to allow the UI to update after they finish and prevent a hang.

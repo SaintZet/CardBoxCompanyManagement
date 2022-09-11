@@ -16,15 +16,12 @@ internal class MainViewModel : INotifyPropertyChanged
     private static Paging PagedTable = new();
     private readonly ICompaniesRepository companies;
     private readonly IWindowService windowService;
+    private Company? selectedItem;
+    private int selectedPageSize;
+    private List<Company> companiesView;
+    private List<Company> pagedList;
     private List<int> pageSize = new List<int> { 2, 10, 15, 30, 50 };
     private string search = string.Empty;
-    private Company? selectedItem;
-    private List<Company> companiesView;
-
-    private DataTable dataList;
-    private int selectedPageSize;
-
-    private int recordsCount;
 
     public MainViewModel(ICompaniesRepository companies, IWindowService windowService)
     {
@@ -38,31 +35,46 @@ internal class MainViewModel : INotifyPropertyChanged
             companiesView.Add(new Company(companiesView[0]));
         }
 
-        PagedTable.PageIndex = 1;
-        dataList = PagedTable.SetPaging(companiesView, SelectedPageSize);
+        PagedTable.PageIndex = 0;
+        PagedList = PagedTable.SetPaging(companiesView, SelectedPageSize);
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    public DataTable DataList
+    public List<Company> PagedList
     {
-        get => dataList;
+        get { return pagedList; }
         set
         {
-            dataList = value;
-            OnPropertyChanged(nameof(CurrentPage));
-            OnPropertyChanged();
+            if (pagedList != value)
+            {
+                pagedList = value;
+                OnPropertyChanged(nameof(PagedList));
+
+                OnPropertyChanged(nameof(CurrentPage));
+
+                DataList.Filter = new Predicate<object>(c => Filter((Company)c));
+                OnPropertyChanged(nameof(DataList));
+            }
         }
     }
 
-    //public ICollectionView DataList
-    //{
-    //    get => CollectionViewSource.GetDefaultView(CompaniesView);
-    //}
-    public int RecordsCount
+    public ICollectionView DataList
     {
-        get => DataList.Rows.Count;//DataList.Cast<object>().Count().ToString();
+        get => CollectionViewSource.GetDefaultView(PagedList);
     }
+
+    //public DataTable DataList
+    //{
+    //    get => dataList;
+    //    set
+    //    {
+    //        dataList = value;
+    //        OnPropertyChanged(nameof(CurrentPage));
+    //        OnPropertyChanged();
+    //    }
+    //}
+    public int RecordsCount { get => companiesView.Count; }
 
     public int CurrentPage
     {
@@ -77,12 +89,15 @@ internal class MainViewModel : INotifyPropertyChanged
             if (selectedPageSize != value)
             {
                 selectedPageSize = value;
-                DataList = PagedTable.First(companiesView, selectedPageSize);
                 OnPropertyChanged(nameof(SelectedPageSize));
+
+                PagedRefresh();
             }
         }
     }
+
     public List<int> NumberOfRecords => pageSize;
+
     public List<Company> CompaniesView
     {
         get { return companiesView!; }
@@ -90,9 +105,7 @@ internal class MainViewModel : INotifyPropertyChanged
         {
             companiesView = value;
             OnPropertyChanged(nameof(CompaniesView));
-
-            //DataList.Filter = new Predicate<object>(c => Filter((Company)c));
-            //OnPropertyChanged(nameof(DataList));
+            OnPropertyChanged(nameof(RecordsCount));
         }
     }
 
@@ -106,34 +119,42 @@ internal class MainViewModel : INotifyPropertyChanged
         }
     }
 
-    //public string SearchCriteria
-    //{
-    //    get { return search; }
-    //    set
-    //    {
-    //        search = value;
-    //        OnPropertyChanged(nameof(SearchCriteria));
+    public string SearchCriteria
+    {
+        get { return search; }
+        set
+        {
+            search = value;
+            OnPropertyChanged(nameof(SearchCriteria));
 
-    //        DataList.Refresh();
-    //        OnPropertyChanged(nameof(RecordsCount));
-    //    }
-    //}
+            DataList.Refresh();
+            PagedRefresh();
+        }
+    }
 
     public ICommand AddCompanyCommand => new RelayCommand(execute: AddCompanyWindow);
+
     public ICommand DeleteCompanyCommand => new RelayCommand(execute: DeleteCompanyWindow, _ => SelectedCompany != null);
+
     public ICommand EditCompanyCommand => new RelayCommand(execute: EditCompanyWindow, _ => SelectedCompany != null);
 
-    public ICommand NextPage => new RelayCommand(execute: (_) => DataList = PagedTable.Next(companiesView, SelectedPageSize));
+    public ICommand NextPage => new RelayCommand(execute: (_) => PagedList = PagedTable.Next(companiesView, SelectedPageSize));
 
-    public ICommand PreviousPage => new RelayCommand(execute: (_) => DataList = PagedTable.Previous(companiesView, SelectedPageSize));
+    public ICommand PreviousPage => new RelayCommand(execute: (_) => PagedList = PagedTable.Previous(companiesView, SelectedPageSize));
 
-    public ICommand FirstPage => new RelayCommand(execute: (_) => DataList = PagedTable.First(companiesView, SelectedPageSize));
+    public ICommand FirstPage => new RelayCommand(execute: (_) => PagedList = PagedTable.First(companiesView, SelectedPageSize));
 
-    public ICommand LastPage => new RelayCommand(execute: (_) => DataList = PagedTable.Last(companiesView, SelectedPageSize));
+    public ICommand LastPage => new RelayCommand(execute: (_) => PagedList = PagedTable.Last(companiesView, SelectedPageSize));
 
     public void OnPropertyChanged([CallerMemberName] string prop = "")
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
+    }
+
+    private void PagedRefresh()
+    {
+        PagedTable.PageIndex = 0;
+        PagedList = PagedTable.First(companiesView, selectedPageSize);
     }
 
     private void AddCompanyWindow(object _)
@@ -166,10 +187,10 @@ internal class MainViewModel : INotifyPropertyChanged
         }
     }
 
-    //private bool Filter(Company company)
-    //{
-    //    return SearchCriteria == null
-    //        || company.ID.ToString().IndexOf(SearchCriteria, StringComparison.OrdinalIgnoreCase) != -1
-    //        || company.Name.IndexOf(SearchCriteria, StringComparison.OrdinalIgnoreCase) != -1;
-    //}
+    private bool Filter(Company company)
+    {
+        return SearchCriteria == null
+            || company.ID.IndexOf(SearchCriteria, StringComparison.OrdinalIgnoreCase) != -1
+            || company.Name.IndexOf(SearchCriteria, StringComparison.OrdinalIgnoreCase) != -1;
+    }
 }
