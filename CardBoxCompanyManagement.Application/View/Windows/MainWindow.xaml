@@ -11,171 +11,102 @@
         MinHeight="350"
         Width="800"
         MinWidth="800">
+    <Window.Resources>
+    </Window.Resources>
     <Grid>
-        <TabControl>
-            <TabItem>
-                <TabItem.Header>
-                    <Label Content="Companies" />
-                </TabItem.Header>
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
-                    <Grid Grid.Row="0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <GroupBox Grid.Column="0"
-                                  Header="Search"
-                                  Width="Auto"
-                                  Margin="10">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <StackPanel Grid.Row="0"
-                                            Orientation="Horizontal">
-                                    <Border>
-                                        <TextBlock Text="Company bulstat/name"
-                                                   Margin="10"
-                                                   HorizontalAlignment="Stretch"
-                                                   VerticalAlignment="Center" />
-                                    </Border>
+            <Grid Grid.Row="0">
+                <GroupBox Style="{StaticResource CRUDSearchGroupBoxStyle}">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Style="{StaticResource CRUDSearchLabelStyle}" />
+                        <TextBox Style="{StaticResource CRUDSearchTextBoxStyle}"
+                                 Text="{Binding SearchCriteria, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+                </GroupBox>
+            </Grid>
 
-                                    <TextBox Text="{Binding SearchCriteria, UpdateSourceTrigger=PropertyChanged}"
-                                             Width="200"
-                                             Height="24"
-                                             Margin="10"
-                                             VerticalContentAlignment="Center" />
-                                </StackPanel>
-                            </Grid>
-                        </GroupBox>
-                    </Grid>
+            <Grid Grid.Row="1"
+                  HorizontalAlignment="Left"
+                  Margin="10">
+                <StackPanel Orientation="Horizontal">
+                    <Button Style="{StaticResource CRUDAddButtonStyle}"
+                            Command="{Binding AddCompanyCommand}" />
+                    <Button Style="{StaticResource CRUDEditButtonStyle}"
+                            Command="{Binding EditCompanyCommand}" />
+                    <Button Style="{StaticResource CRUDDeleteButtonStyle}"
+                            Command="{Binding DeleteCompanyCommand}"
+                            IsEnabled="False" />
+                </StackPanel>
+            </Grid>
 
-                    <Grid Grid.Row="1"
-                          HorizontalAlignment="Left"
-                          VerticalAlignment="Bottom">
-                        <StackPanel Orientation="Horizontal">
-                            <Button Content="Add"
-                                    Width="60"
-                                    Height="24"
-                                    Margin="10"
-                                    Command="{Binding AddCompanyCommand}" />
-                            <Button Content="Edit"
-                                    Width="60"
-                                    Height="24"
-                                    Margin="0"
-                                    Command="{Binding EditCompanyCommand}" />
-                            <Button Content="Delete"
-                                    Width="60"
-                                    Height="24"
-                                    Margin="10"
-                                    IsEnabled="False"
-                                    Command="{Binding DeleteCompanyCommand}" />
-                        </StackPanel>
-                    </Grid>
-                    <DataGrid Grid.Row="2"
-                              x:Name="CompaniesList"
-                              CanUserAddRows="False"
-                              CanUserDeleteRows="False"
-                              CanUserResizeRows="False"
-                              CanUserResizeColumns="False"
-                              AutoGenerateColumns="False"
-                              IsReadOnly="True"
-                              Margin="10,0,10,0"
-                              ItemsSource="{Binding PagedCompanies}"
-                              SelectedItem="{Binding SelectedCompany}">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Bulstat"
-                                                Binding="{Binding ID}" />
-                            <DataGridTextColumn Header="Name"
-                                                Binding="{Binding Name}" />
-                            <DataGridTextColumn Header="Category"
-                                                Binding="{Binding Category.Name}" />
-                            <DataGridTextColumn Header="Summary"
-                                                Binding="{Binding Summary}" />
-                            <DataGridHyperlinkColumn Header="Image"
-                                                     Binding="{Binding Image.Uri}">
-                                <DataGridHyperlinkColumn.ElementStyle>
-                                    <Style>
-                                        <EventSetter Event="Hyperlink.Click"
-                                                     Handler="DG_Hyperlink_Click" />
-                                    </Style>
-                                </DataGridHyperlinkColumn.ElementStyle>
-                            </DataGridHyperlinkColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                    <Grid Grid.Row="4"
-                          Margin="10">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <Grid Grid.Column="0">
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="Total Records:"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center" />
-                                <TextBlock HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"
-                                           Text="{Binding RecordsCount}" />
-                            </StackPanel>
-                        </Grid>
-                        <Grid Grid.Column="1">
-                            <Border HorizontalAlignment="Center">
-                                <StackPanel Orientation="Horizontal">
-                                    <Button Content="|&lt;"
-                                            Width="40"
-                                            Margin="5,0,5,0"
-                                            Command="{Binding FirstPage}" />
-                                    <Button Content="&lt;"
-                                            Width="40"
-                                            Margin="5,0,5,0"
-                                            Command="{Binding PreviousPage}" />
-                                    <Border BorderThickness="1"
-                                            BorderBrush="Black">
-                                        <TextBlock Text="{Binding CurrentPage}"
-                                                   Margin="10,0,10,0"
-                                                   VerticalAlignment="Center" />
-                                    </Border>
-                                    <Button Content="&gt;"
-                                            Width="40"
-                                            Margin="5,0,5,0"
-                                            Command="{Binding NextPage}" />
-                                    <Button Content="&gt;|"
-                                            Width="40"
-                                            Margin="5,0,5,0"
-                                            Command="{Binding LastPage}" />
-                                </StackPanel>
-                            </Border>
-                        </Grid>
-                        <Grid Grid.Column="2"
-                              HorizontalAlignment="Right">
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="Page Size"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center" />
-                                <ComboBox ItemsSource="{Binding PageSizes}"
-                                          SelectedItem="{Binding SelectedPageSize}" />
-                            </StackPanel>
-                        </Grid>
-                    </Grid>
+            <DataGrid Grid.Row="2"
+                      Style="{StaticResource CRUDDataGridStyle}"
+                      ItemsSource="{Binding PagedCompanies}"
+                      SelectedItem="{Binding SelectedCompany}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Bulstat"
+                                        Binding="{Binding ID}" />
+                    <DataGridTextColumn Header="Name"
+                                        Binding="{Binding Name}" />
+                    <DataGridTextColumn Header="Category"
+                                        Binding="{Binding Category.Name}" />
+                    <DataGridTextColumn Header="Summary"
+                                        Binding="{Binding Summary}" />
+                    <DataGridHyperlinkColumn Header="Image"
+                                             Binding="{Binding Image.Uri}">
+                        <DataGridHyperlinkColumn.ElementStyle>
+                            <Style>
+                                <EventSetter Event="Hyperlink.Click"
+                                             Handler="DG_Hyperlink_Click" />
+                            </Style>
+                        </DataGridHyperlinkColumn.ElementStyle>
+                    </DataGridHyperlinkColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <Grid Grid.Row="3"
+                  Margin="10">
+                <Grid HorizontalAlignment="Left">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Style="{StaticResource PagerTotalRecordLabelStyle}" />
+                        <Label Style="{StaticResource PagerTotalRecordValueStyle}"
+                               Content="{Binding RecordsCount}" />
+                    </StackPanel>
                 </Grid>
-            </TabItem>
-            <TabItem>
-                <TabItem.Header>
-                    <Label Content="Cards" />
-                </TabItem.Header>
-            </TabItem>
-        </TabControl>
+                <Grid HorizontalAlignment="Center">
+                    <StackPanel Orientation="Horizontal">
+                        <Button Style="{StaticResource PagerFirstPageButtonStyle}"
+                                Command="{Binding FirstPage}" />
+                        <Button Style="{StaticResource PagerPreviousPageButtonStyle}"
+                                Command="{Binding PreviousPage}" />
+                        <Border BorderThickness="1"
+                                BorderBrush="Black"
+                                Height="24">
+                            <TextBlock Text="{Binding CurrentPage}"
+                                       Style="{StaticResource PagerCurrentPageTextBlockStyle}" />
+                        </Border>
+                        <Button Style="{StaticResource PagerNextPageButtonStyle}"
+                                Command="{Binding NextPage}" />
+                        <Button Style="{StaticResource PagerLastPageButtonStyle}"
+                                Command="{Binding LastPage}" />
+                    </StackPanel>
+                </Grid>
+                <Grid HorizontalAlignment="Right">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Style="{StaticResource PagerPageSizeLabelStyle}" />
+                        <ComboBox Style="{StaticResource PagerPageSizeComboBoxStyle}"
+                                  ItemsSource="{Binding PageSizes}"
+                                  SelectedItem="{Binding SelectedPageSize}" />
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Grid>
     </Grid>
 </Window>

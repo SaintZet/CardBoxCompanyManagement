@@ -3,31 +3,14 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CardBoxCompanyManagement.View"
         xmlns:controls="clr-namespace:CardBoxCompanyManagement.Application.View.UserControls"
         mc:Ignorable="d"
+        x:Name="this"
         Title="Delete Company"
-        MinHeight="350"
-        MaxHeight="350"
-        MinWidth="450"
-        MaxWidth="450"
-        WindowStyle="ToolWindow"
-        WindowStartupLocation="CenterScreen">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+        WindowStartupLocation="CenterScreen"
+        Style="{StaticResource DefaultPopupWindowStyle}">
 
-        <controls:CompanyFields />
-
-        <Button Grid.Row="1"
-                Content="Delete"
-                HorizontalAlignment="Right"
-                Width="100"
-                Margin="10"
-                Command="{Binding ButtonIsEnabledCommand}"
-                IsDefault="True"
-                Click="Button_Click" />
-    </Grid>
+    <controls:DefaultCRUDPopup ActionButtonContent="Delete"
+                               ActionButtonCommand="{Binding ButtonIsEnabledCommand}"
+                               ActionButtonCommandParameter="{Binding ElementName=this }" />
 </Window>

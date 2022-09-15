@@ -1,16 +1,14 @@
 ﻿using CardBoxCompanyManagement.Infrastructure;
 using CardBoxCompanyManagement.Services;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
 namespace CardBoxCompanyManagement.ViewModels;
 
-internal class MainViewModel : INotifyPropertyChanged
+internal class MainViewModel : BaseViewModel
 {
-    private static List<int> pageSizes = new() { 10, 15, 30, 50 };
+    private static int[] pageSizes = new int[] { 10, 15, 30, 50 };
     private readonly Paging<Company> pagingManager = new();
     private readonly ICompaniesRepository companies;
     private readonly IWindowService windowService;
@@ -31,8 +29,6 @@ internal class MainViewModel : INotifyPropertyChanged
         pagingManager.PageIndex = 0;
         pagedCompanies = pagingManager.SetPaging(filteredCompanies, SelectedPageSize);
     }
-
-    public event PropertyChangedEventHandler? PropertyChanged;
 
     public List<Company> AllCompanies
     {
@@ -61,7 +57,7 @@ internal class MainViewModel : INotifyPropertyChanged
     }
     public int CurrentPage => pagingManager.PageIndex + 1;
     public int RecordsCount => allCompanies.Count;
-    public List<int> PageSizes => pageSizes;
+    public int[] PageSizes => pageSizes;
     public int SelectedPageSize
     {
         get => selectedPageSize;
@@ -100,11 +96,6 @@ internal class MainViewModel : INotifyPropertyChanged
     public ICommand FirstPage => new RelayCommand(execute: (_) => PagedCompanies = pagingManager.First(filteredCompanies, selectedPageSize));
 
     public ICommand LastPage => new RelayCommand(execute: (_) => PagedCompanies = pagingManager.Last(filteredCompanies, selectedPageSize));
-
-    public void OnPropertyChanged([CallerMemberName] string prop = "")
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
-    }
 
     private void AddCompanyWindow(object _)
     {

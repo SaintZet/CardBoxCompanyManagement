@@ -65,6 +65,7 @@ internal class Paging<T>
     /// <returns> List </returns>
     public List<T> Last(IList<T> ListToPage, int RecordsPerPage)
     {
+        //TODO: fix bug with last page
         PageIndex = ListToPage.Count / RecordsPerPage;
         return SetPaging(ListToPage, RecordsPerPage);
     }

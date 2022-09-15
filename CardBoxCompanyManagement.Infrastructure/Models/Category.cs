@@ -9,5 +9,5 @@ public class Category
     }
 
     public string Name { get; } = string.Empty;
-    public int Number { get; }
+    public int Number { get; set; }
 }

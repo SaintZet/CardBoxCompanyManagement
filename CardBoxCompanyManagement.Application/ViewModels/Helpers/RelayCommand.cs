@@ -5,10 +5,11 @@ namespace CardBoxCompanyManagement.ViewModels;
 
 public class RelayCommand : ICommand
 {
-    private readonly Func<object, bool> canExecute;
+    //TODO: predicate?
+    private readonly Predicate<object> canExecute;
     private readonly Action<object> execute;
 
-    public RelayCommand(Action<object> execute, Func<object, bool>? canExecute = null)
+    public RelayCommand(Action<object> execute, Predicate<object>? canExecute = null)
     {
         this.execute = execute;
         this.canExecute = canExecute!;

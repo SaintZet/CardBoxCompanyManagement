@@ -4,34 +4,26 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
 namespace CardBoxCompanyManagement.ViewModels;
 
-public enum CRUDOperation
-{
-    Add,
-    Delete,
-    Edit
-}
-
-internal class CRUDCompanyViewModel : INotifyPropertyChanged, IDataErrorInfo
+internal class CRUDCompanyViewModel : BaseViewModel, IDataErrorInfo
 {
     private Company? company;
-    private int selectedCategory;
+    private Category selectedCategory;
     private bool idHasError;
 
     public CRUDCompanyViewModel(ICategoriesRepository categories)
     {
         Categories = categories.Categories;
+        selectedCategory = Categories[0];
     }
 
-    public event PropertyChangedEventHandler? PropertyChanged;
-
-    public string ID
+    public string CompanyID
     {
         get => company!.ID;
         set
@@ -53,7 +45,7 @@ internal class CRUDCompanyViewModel : INotifyPropertyChanged, IDataErrorInfo
 
     public Uri ImageUri
     {
-        get => Company.Image.Uri;
+        get => Company.Image.Uri ?? new Uri("about:blank");
         set
         {
             Company.Image.Uri = value;
@@ -61,19 +53,18 @@ internal class CRUDCompanyViewModel : INotifyPropertyChanged, IDataErrorInfo
         }
     }
 
-    public int SelectedCategory
+    public Category SelectedCategory
     {
         get => selectedCategory!;
         set
         {
             selectedCategory = value;
-            Company.Category = Categories.First(c => c.Number == selectedCategory);
+            Company.Category = Categories.First(c => c.Number == selectedCategory.Number);
             OnPropertyChanged();
         }
     }
 
-    public List<Category> Categories { get; }
-
+    public List<Category> Categories { get; private set; }
     public bool IsEnabledBrowseImage { get; private set; } = true;
     public bool IsEnabledCategory { get; private set; } = true;
     public bool ReadOnlyID { get; private set; }
@@ -82,22 +73,16 @@ internal class CRUDCompanyViewModel : INotifyPropertyChanged, IDataErrorInfo
 
     public ICommand BrowseImageCommand => new RelayCommand(execute: BrowseImage, canExecute: _ => IsEnabledBrowseImage);
 
-    public ICommand ButtonIsEnabledCommand => new RelayCommand(execute: _ => DoNothing(), canExecute: _ => !CompanyPropertiesIsNullOrWhiteSpace() && !idHasError);
+    public ICommand ButtonIsEnabledCommand => new RelayCommand(execute: (obj) => ((Window)obj).DialogResult = true, canExecute: _ => !CompanyPropertiesIsNullOrWhiteSpace() && !idHasError);
 
     public string Error => "Bulstat invalid!";
 
-    public string this[string columnName]
-    {
-        get
-        {
-            return Validate(columnName);
-        }
-    }
+    public string this[string columnName] => Validate(columnName);
 
     public CRUDCompanyViewModel Load(Company company, CRUDOperation operation)
     {
         this.company = company;
-        SelectedCategory = company.Category.Number;
+        SelectedCategory = company.Category;
 
         switch (operation)
         {
@@ -122,35 +107,27 @@ internal class CRUDCompanyViewModel : INotifyPropertyChanged, IDataErrorInfo
         return this;
     }
 
-    public void OnPropertyChanged([CallerMemberName] string prop = "")
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
-    }
-
     private string Validate(string propertyName)
     {
         switch (propertyName)
         {
-            case nameof(ID):
-                idHasError = !EIKValidator.Validate(ID);
+            case nameof(CompanyID):
+                idHasError = !EIKValidator.Validate(CompanyID);
                 return idHasError ? "Error" : string.Empty;
         }
 
         return string.Empty;
     }
 
-    private void DoNothing()
-    {
-    }
-
     private bool CompanyPropertiesIsNullOrWhiteSpace()
     {
-        return string.IsNullOrWhiteSpace(Company.Name) |
-               string.IsNullOrWhiteSpace(Company.ID) |
-               string.IsNullOrWhiteSpace(Company.Summary) |
+        return string.IsNullOrWhiteSpace(Company.Name) ||
+               string.IsNullOrWhiteSpace(Company.ID) ||
+               string.IsNullOrWhiteSpace(Company.Summary) ||
                string.IsNullOrWhiteSpace(Company.Image.Uri?.ToString());
     }
 
+    //TODO: Create interface (for tests)
     private void BrowseImage(object _)
     {
         OpenFileDialog dlg = new OpenFileDialog
@@ -172,7 +149,7 @@ internal class CRUDCompanyViewModel : INotifyPropertyChanged, IDataErrorInfo
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                System.Windows.Forms.MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

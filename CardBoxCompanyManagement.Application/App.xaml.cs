@@ -15,9 +15,9 @@ public partial class App : System.Windows.Application
         AppHost = Host.CreateDefaultBuilder()
             .ConfigureServices((hostContext, services) =>
             {
-                services.AddTransient<MainViewModel>();
-                services.AddSingleton(s => new MainWindow(s.GetRequiredService<MainViewModel>()));
+                services.AddSingleton<MainViewModel>();
 
+                services.AddSingleton(s => new MainWindow(s.GetRequiredService<MainViewModel>()));
                 services.AddTransient(s => new CRUDCompanyViewModel(s.GetRequiredService<ICategoriesRepository>()));
 
                 services.AddSingleton<IWindowService, WindowService>();
