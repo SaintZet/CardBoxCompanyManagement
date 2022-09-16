@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.2.32526.322
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32413.511
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CardBoxCompanyManagement", "CardBoxCompanyManagement.Application\CardBoxCompanyManagement.csproj", "{4D18A50A-45E1-4EAA-9EB9-A988F1057D33}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CardBox.CompanyManagement", "CardBox.CompanyManagement\CardBox.CompanyManagement.csproj", "{4D18A50A-45E1-4EAA-9EB9-A988F1057D33}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CardBox.ApiClient", "CardBoxCompanyManagement.Infrastructure\CardBox.ApiClient.csproj", "{DA1672F5-D31A-4323-9CE8-7329F6FE7849}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CardBox.ApiClient", "CardBox.ApiClient\CardBox.ApiClient.csproj", "{DA1672F5-D31A-4323-9CE8-7329F6FE7849}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
