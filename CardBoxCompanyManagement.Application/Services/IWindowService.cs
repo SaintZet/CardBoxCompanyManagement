@@ -1,4 +1,4 @@
-﻿using CardBoxCompanyManagement.Infrastructure;
+﻿using CardBox.ApiClient.Models;
 
 namespace CardBoxCompanyManagement.Services;
 

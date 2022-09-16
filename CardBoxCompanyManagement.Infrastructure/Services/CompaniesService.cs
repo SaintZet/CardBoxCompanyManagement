@@ -1,13 +1,14 @@
-﻿using Newtonsoft.Json;
+﻿using CardBox.ApiClient.Models;
+using Newtonsoft.Json;
 
-namespace CardBoxCompanyManagement.Infrastructure;
+namespace CardBox.ApiClient.Services;
 
-public class CompaniesRepository : ICompaniesRepository
+public class CompaniesService : ICompaniesService
 {
     private static string defaultAddressToResquest = "https://microinvest.cardbox.bg/company/";
     private HttpRequestManager defaultHttpManager = new(defaultAddressToResquest);
 
-    public List<Company> Get()
+    public List<Company> GetCompanies()
     {
         HttpRequestManager specificHttpManager = new("https://microinvest.cardbox.bg/companies/");
 

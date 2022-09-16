@@ -1,4 +1,5 @@
-﻿using CardBoxCompanyManagement.Infrastructure;
+﻿using CardBox.ApiClient.Models;
+using CardBox.ApiClient.Services;
 using CardBoxCompanyManagement.Services;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ internal class MainViewModel : BaseViewModel
 {
     private static int[] pageSizes = new int[] { 10, 15, 30, 50 };
     private readonly Paging<Company> pagingManager = new();
-    private readonly ICompaniesRepository companies;
+    private readonly ICompaniesService companies;
     private readonly IWindowService windowService;
     private int selectedPageSize = pageSizes[0];
     private List<Company> allCompanies;
@@ -18,12 +19,12 @@ internal class MainViewModel : BaseViewModel
     private List<Company> pagedCompanies;
     private string search = string.Empty;
 
-    public MainViewModel(ICompaniesRepository companies, IWindowService windowService)
+    public MainViewModel(ICompaniesService companies, IWindowService windowService)
     {
         this.companies = companies;
         this.windowService = windowService;
 
-        allCompanies = companies.Get();
+        allCompanies = companies.GetCompanies();
         filteredCompanies = allCompanies;
 
         pagingManager.PageIndex = 0;
@@ -103,7 +104,7 @@ internal class MainViewModel : BaseViewModel
         if (windowService.AddWindow(company) == true)
         {
             companies.Post(company);
-            AllCompanies = companies.Get();
+            AllCompanies = companies.GetCompanies();
         }
     }
 
@@ -113,7 +114,7 @@ internal class MainViewModel : BaseViewModel
         if (windowService.DeleteWindow(company) == true)
         {
             companies.Delete(company);
-            AllCompanies = companies.Get();
+            AllCompanies = companies.GetCompanies();
         }
     }
 
@@ -123,7 +124,7 @@ internal class MainViewModel : BaseViewModel
         if (windowService.EditWindow(company) == true)
         {
             companies.Put(company);
-            AllCompanies = companies.Get();
+            AllCompanies = companies.GetCompanies();
         }
     }
 

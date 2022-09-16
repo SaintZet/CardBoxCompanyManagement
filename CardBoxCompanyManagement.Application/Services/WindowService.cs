@@ -1,4 +1,4 @@
-﻿using CardBoxCompanyManagement.Infrastructure;
+﻿using CardBox.ApiClient.Models;
 using CardBoxCompanyManagement.View;
 using CardBoxCompanyManagement.ViewModels;
 using Microsoft.Extensions.DependencyInjection;

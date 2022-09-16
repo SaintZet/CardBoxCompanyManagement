@@ -1,4 +1,4 @@
-﻿namespace CardBoxCompanyManagement.Infrastructure;
+﻿namespace CardBox.ApiClient.Models;
 
 public class Image
 {

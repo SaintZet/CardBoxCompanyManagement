@@ -1,8 +1,8 @@
-﻿using CardBoxCompanyManagement.Infrastructure;
+﻿using CardBox.ApiClient.Models;
 
 namespace ExtensionMethods;
 
-public static class MyExtensions
+internal static class MyExtensions
 {
     public static List<Category> ToListCategory(this Dictionary<int, string> dictionary)
     {

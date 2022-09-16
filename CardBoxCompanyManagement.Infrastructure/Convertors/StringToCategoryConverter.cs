@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using CardBox.ApiClient.Models;
+using CardBox.ApiClient.Services;
+using Newtonsoft.Json;
 
 namespace CardBoxCompanyManagement.Infrastructure.Convertors;
 
@@ -19,7 +21,7 @@ internal class StringToCategoryConverter : JsonConverter
     {
         int categoryNumber = (int)(long)reader.Value!;
 
-        var repo = new CategoriesRepository().Categories;
+        var repo = new CategoriesService().GetCategories();
 
         return repo.First(c => c.Number == categoryNumber);
     }

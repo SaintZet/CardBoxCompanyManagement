@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using Newtonsoft.Json;
 
-namespace CardBoxCompanyManagement.Infrastructure;
+namespace CardBox.ApiClient;
 
 internal class HttpRequestManager
 {

@@ -1,4 +1,5 @@
-﻿using CardBoxCompanyManagement.Infrastructure;
+﻿using CardBox.ApiClient.Models;
+using CardBox.ApiClient.Services;
 using CardBoxCompanyManagement.ViewModels.Validators;
 using System;
 using System.Collections.Generic;
@@ -13,13 +14,16 @@ namespace CardBoxCompanyManagement.ViewModels;
 
 internal class CRUDCompanyViewModel : BaseViewModel, IDataErrorInfo
 {
+    private readonly ICategoriesService categories;
     private Company? company;
     private Category selectedCategory;
     private bool idHasError;
 
-    public CRUDCompanyViewModel(ICategoriesRepository categories)
+    public CRUDCompanyViewModel(ICategoriesService categories)
     {
-        Categories = categories.Categories;
+        this.categories = categories;
+
+        Categories = categories.GetCategories();
         selectedCategory = Categories[0];
     }
 
@@ -82,7 +86,7 @@ internal class CRUDCompanyViewModel : BaseViewModel, IDataErrorInfo
     public CRUDCompanyViewModel Load(Company company, CRUDOperation operation)
     {
         this.company = company;
-        SelectedCategory = company.Category;
+        SelectedCategory = company.Category ?? categories.GetCategories().FirstOrDefault()!; ;
 
         switch (operation)
         {

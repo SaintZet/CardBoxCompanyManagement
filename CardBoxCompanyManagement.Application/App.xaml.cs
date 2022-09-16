@@ -1,4 +1,4 @@
-﻿using CardBoxCompanyManagement.Infrastructure;
+﻿using CardBox.ApiClient.Services;
 using CardBoxCompanyManagement.Services;
 using CardBoxCompanyManagement.View;
 using CardBoxCompanyManagement.ViewModels;
@@ -18,11 +18,11 @@ public partial class App : System.Windows.Application
                 services.AddSingleton<MainViewModel>();
 
                 services.AddSingleton(s => new MainWindow(s.GetRequiredService<MainViewModel>()));
-                services.AddTransient(s => new CRUDCompanyViewModel(s.GetRequiredService<ICategoriesRepository>()));
+                services.AddTransient(s => new CRUDCompanyViewModel(s.GetRequiredService<ICategoriesService>()));
 
                 services.AddSingleton<IWindowService, WindowService>();
-                services.AddSingleton<ICategoriesRepository, CategoriesRepository>();
-                services.AddSingleton<ICompaniesRepository, CompaniesRepository>();
+                services.AddSingleton<ICategoriesService, CategoriesService>();
+                services.AddSingleton<ICompaniesService, CompaniesService>();
             })
             .Build();
     }

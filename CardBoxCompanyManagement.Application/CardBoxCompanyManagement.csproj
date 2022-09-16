@@ -21,8 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CardBoxCompanyManagement.Domain\CardBoxCompanyManagement.Domain.csproj" />
-    <ProjectReference Include="..\CardBoxCompanyManagement.Infrastructure\CardBoxCompanyManagement.Infrastructure.csproj" />
+    <ProjectReference Include="..\CardBoxCompanyManagement.Infrastructure\CardBox.ApiClient.csproj" />
   </ItemGroup>
 
 </Project>
