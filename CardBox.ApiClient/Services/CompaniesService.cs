@@ -1,51 +1,41 @@
-﻿using CardBox.ApiClient.Models;
+﻿using CardBox.ApiClient.Constants;
+using CardBox.ApiClient.Contracts;
+using CardBox.ApiClient.Helpers;
+using CardBox.ApiClient.Models;
 using Newtonsoft.Json;
 
 namespace CardBox.ApiClient.Services;
 
 public class CompaniesService : ICompaniesService
 {
-    private static string defaultAddressToResquest = "https://microinvest.cardbox.bg/company/";
-    private HttpRequestManager defaultHttpManager = new(defaultAddressToResquest);
-
-    public List<Company> GetCompanies()
+    private readonly HttpRequestManager _defaultHttpManager = new(CompanyRequests.Company);
+    
+    public async Task<List<Company>> GetCompaniesAsync()
     {
-        HttpRequestManager specificHttpManager = new("https://microinvest.cardbox.bg/companies/");
-
-        string body = JsonConvert.SerializeObject("", Formatting.Indented);
-        var response = specificHttpManager.Request(HttpMethod.Get, body);
-        var responseBody = response.Content.ReadAsStringAsync().Result;
-
-        List<Company> companies = new();
-        foreach (var item in JsonConvert.DeserializeObject<Dictionary<string, Company>>(responseBody)!)
-        {
-            companies.Add(item.Value);
-        }
-
-        return companies;
+        HttpRequestManager specificHttpManager = new(CompanyRequests.Companies);
+        var response = specificHttpManager.Request(HttpMethod.Get, string.Empty);
+        var responseBody = await response.Content.ReadAsStringAsync();
+        return JsonConvert.DeserializeObject<Dictionary<string, Company>>(responseBody)!.Select(item => item.Value).ToList();
     }
 
     public bool Delete(Company company)
     {
-        string body = JsonConvert.SerializeObject(company, Formatting.Indented);
-        var response = defaultHttpManager.Request(HttpMethod.Delete, body);
-
+        var body = JsonConvert.SerializeObject(company, Formatting.Indented);
+        var response = _defaultHttpManager.Request(HttpMethod.Delete, body);
         return response.StatusCode == System.Net.HttpStatusCode.OK;
     }
 
     public bool Post(Company company)
     {
-        string body = JsonConvert.SerializeObject(company, Formatting.Indented);
-        var response = defaultHttpManager.Request(HttpMethod.Post, body);
-
+        var body = JsonConvert.SerializeObject(company, Formatting.Indented);
+        var response = _defaultHttpManager.Request(HttpMethod.Post, body);
         return response.StatusCode == System.Net.HttpStatusCode.OK;
     }
 
     public bool Put(Company company)
     {
-        string body = JsonConvert.SerializeObject(company, Formatting.Indented);
-        var response = defaultHttpManager.Request(HttpMethod.Put, body);
-
+        var body = JsonConvert.SerializeObject(company, Formatting.Indented);
+        var response = _defaultHttpManager.Request(HttpMethod.Put, body);
         return response.StatusCode == System.Net.HttpStatusCode.OK;
     }
 }

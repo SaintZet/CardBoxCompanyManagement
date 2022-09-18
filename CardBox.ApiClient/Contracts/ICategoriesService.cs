@@ -1,6 +1,6 @@
 ﻿using CardBox.ApiClient.Models;
 
-namespace CardBox.ApiClient.Services;
+namespace CardBox.ApiClient.Contracts;
 
 public interface ICategoriesService
 {

@@ -1,10 +1,10 @@
 ﻿using CardBox.ApiClient.Models;
 
-namespace CardBox.ApiClient.Services;
+namespace CardBox.ApiClient.Contracts;
 
 public interface ICompaniesService
 {
-    public List<Company> GetCompanies();
+    public Task<List<Company>> GetCompaniesAsync();
 
     public bool Delete(Company company);
 

@@ -1,7 +1,7 @@
 ﻿using CardBox.ApiClient.Models;
 using Newtonsoft.Json;
 
-namespace CardBoxCompanyManagement.Infrastructure.Convertors;
+namespace CardBox.ApiClient.Convertors;
 
 internal class StringToImageConverter : JsonConverter
 {
