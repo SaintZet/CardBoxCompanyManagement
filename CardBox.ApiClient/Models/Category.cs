@@ -8,6 +8,6 @@ public class Category
         Name = name;
     }
 
-    public string Name { get; } = string.Empty;
+    public string Name { get; }
     public int Number { get; set; }
 }

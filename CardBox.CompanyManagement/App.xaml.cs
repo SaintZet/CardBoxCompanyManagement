@@ -5,6 +5,7 @@ using CardBox.CompanyManagement.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Windows;
+using CardBox.ApiClient.Contracts;
 
 namespace CardBox.CompanyManagement;
 

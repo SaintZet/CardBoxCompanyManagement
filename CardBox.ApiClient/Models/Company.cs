@@ -1,4 +1,4 @@
-﻿using CardBoxCompanyManagement.Infrastructure.Convertors;
+﻿using CardBox.ApiClient.Convertors;
 using Newtonsoft.Json;
 
 namespace CardBox.ApiClient.Models;

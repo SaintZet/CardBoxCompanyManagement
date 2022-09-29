@@ -1,6 +1,6 @@
 ﻿using CardBox.ApiClient.Models;
 
-namespace ExtensionMethods;
+namespace CardBox.ApiClient.Helpers;
 
 internal static class MyExtensions
 {

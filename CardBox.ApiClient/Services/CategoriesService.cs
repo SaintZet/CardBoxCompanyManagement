@@ -1,5 +1,7 @@
-﻿using CardBox.ApiClient.Models;
-using ExtensionMethods;
+﻿using CardBox.ApiClient.Constants;
+using CardBox.ApiClient.Contracts;
+using CardBox.ApiClient.Helpers;
+using CardBox.ApiClient.Models;
 using Newtonsoft.Json;
 
 namespace CardBox.ApiClient.Services;
@@ -12,8 +14,8 @@ public class CategoriesService : ICategoriesService
 
     private static List<Category> RequestToGetCategories()
     {
-        string body = JsonConvert.SerializeObject("", Formatting.Indented);
-        var response = new HttpRequestManager("https://microinvest.cardbox.bg/categories/").Request(HttpMethod.Get, body);
+        var body = JsonConvert.SerializeObject("", Formatting.Indented);
+        var response = new HttpRequestManager(CategoryRequests.Base).Request(HttpMethod.Get, body);
         var responseBody = response.Content.ReadAsStringAsync().Result;
 
         //take list with dictionary becouse no have another way with responce from API.
