@@ -5,11 +5,11 @@ namespace CardBox.ApiClient.Helpers;
 
 internal class HttpRequestManager
 {
-    private readonly HttpClient client = new();
+    private readonly HttpClient _client = new();
 
     public HttpRequestManager(string url)
     {
-        client.DefaultRequestHeaders.Add("URL", url);
+        _client.DefaultRequestHeaders.Add("URL", url);
     }
 
     public string Get(object? obj = null)
@@ -30,6 +30,6 @@ internal class HttpRequestManager
             Content = new StringContent(data, Encoding.UTF8, "application/json")
         };
 
-        return client.SendAsync(request).Result;
+        return _client.SendAsync(request).Result;
     }
 }

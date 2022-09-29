@@ -1,10 +1,9 @@
-﻿using CardBox.ApiClient.Models;
-using CardBox.ApiClient.Services;
+﻿using CardBox.ApiClient.Contracts;
+using CardBox.ApiClient.Models;
 using CardBox.CompanyManagement.Services;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
-using CardBox.ApiClient.Contracts;
 
 namespace CardBox.CompanyManagement.ViewModels;
 

@@ -4,11 +4,11 @@ namespace CardBox.CompanyManagement.Services;
 
 internal class SelectImageService : ISelectImageService
 {
-    private readonly OpenFileDialog dialog;
+    private readonly OpenFileDialog _dialog;
 
     public SelectImageService()
     {
-        dialog = new OpenFileDialog
+        _dialog = new OpenFileDialog
         {
             InitialDirectory = @"%userprofile%\Pictures",
             Filter = "All supported graphics|*.jpg;*.jpeg;*.png|" +
@@ -18,7 +18,7 @@ internal class SelectImageService : ISelectImageService
         };
     }
 
-    public string FileName => dialog.FileName;
+    public string FileName => _dialog.FileName;
 
-    public DialogResult ShowDialog() => dialog.ShowDialog();
+    public DialogResult ShowDialog() => _dialog.ShowDialog();
 }

@@ -1,5 +1,5 @@
-﻿using CardBox.ApiClient.Models;
-using CardBox.ApiClient.Services;
+﻿using CardBox.ApiClient.Contracts;
+using CardBox.ApiClient.Models;
 using CardBox.CompanyManagement.Services;
 using CardBox.CompanyManagement.ViewModels.Validators;
 using System;
@@ -10,41 +10,40 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using CardBox.ApiClient.Contracts;
 
 namespace CardBox.CompanyManagement.ViewModels;
 
 internal class CRUDCompanyViewModel : BaseViewModel, IDataErrorInfo
 {
-    private readonly ICategoriesService categories;
-    private readonly ISelectImageService selectImageService;
-    private Company? company;
-    private Category selectedCategory;
-    private bool idHasError;
+    private readonly ICategoriesService _categories;
+    private readonly ISelectImageService _selectImageService;
+    private Company? _company;
+    private Category _selectedCategory;
+    private bool _idHasError;
 
     public CRUDCompanyViewModel(ICategoriesService categories, ISelectImageService selectImageService)
     {
-        this.categories = categories;
-        this.selectImageService = selectImageService;
+        _categories = categories;
+        _selectImageService = selectImageService;
         Categories = categories.GetCategories();
-        selectedCategory = Categories[0];
+        _selectedCategory = Categories[0];
     }
 
     public string CompanyID
     {
-        get => company!.ID;
+        get => _company!.ID;
         set
         {
-            company!.ID = value;
+            _company!.ID = value;
             OnPropertyChanged();
         }
     }
     public Company Company
     {
-        get => company!;
+        get => _company!;
         private set
         {
-            company = value;
+            _company = value;
             OnPropertyChanged();
         }
     }
@@ -59,11 +58,11 @@ internal class CRUDCompanyViewModel : BaseViewModel, IDataErrorInfo
     }
     public Category SelectedCategory
     {
-        get => selectedCategory!;
+        get => _selectedCategory!;
         set
         {
-            selectedCategory = value;
-            Company.Category = Categories.First(c => c.Number == selectedCategory.Number);
+            _selectedCategory = value;
+            Company.Category = Categories.First(c => c.Number == _selectedCategory.Number);
             OnPropertyChanged();
         }
     }
@@ -76,7 +75,7 @@ internal class CRUDCompanyViewModel : BaseViewModel, IDataErrorInfo
 
     public ICommand BrowseImageCommand => new RelayCommand(execute: BrowseImage, canExecute: _ => IsEnabledBrowseImage);
 
-    public ICommand ButtonIsEnabledCommand => new RelayCommand(execute: CloseWindow, canExecute: _ => !CompanyPropertiesIsNullOrWhiteSpace() && !idHasError);
+    public ICommand ButtonIsEnabledCommand => new RelayCommand(execute: CloseWindow, canExecute: _ => !CompanyPropertiesIsNullOrWhiteSpace() && !_idHasError);
 
     public string Error => "Bulstat invalid!";
 
@@ -84,8 +83,8 @@ internal class CRUDCompanyViewModel : BaseViewModel, IDataErrorInfo
 
     public CRUDCompanyViewModel Load(Company company, CRUDOperation operation)
     {
-        this.company = company;
-        SelectedCategory = company.Category ?? categories.GetCategories().FirstOrDefault()!; ;
+        _company = company;
+        SelectedCategory = company.Category ?? _categories.GetCategories().FirstOrDefault()!; ;
 
         switch (operation)
         {
@@ -115,8 +114,8 @@ internal class CRUDCompanyViewModel : BaseViewModel, IDataErrorInfo
         switch (propertyName)
         {
             case nameof(CompanyID):
-                idHasError = !EIKValidator.Validate(CompanyID);
-                return idHasError ? "Error" : string.Empty;
+                _idHasError = !EIKValidator.Validate(CompanyID);
+                return _idHasError ? "Error" : string.Empty;
         }
 
         return string.Empty;
@@ -132,14 +131,14 @@ internal class CRUDCompanyViewModel : BaseViewModel, IDataErrorInfo
 
     private void BrowseImage(object _)
     {
-        if (selectImageService.ShowDialog() != DialogResult.OK)
+        if (_selectImageService.ShowDialog() != DialogResult.OK)
         {
             return;
         }
 
         try
         {
-            Uri uri = new(selectImageService.FileName, UriKind.Absolute);
+            Uri uri = new(_selectImageService.FileName, UriKind.Absolute);
             Company.Image.Base64 = ImageConvertor.ConvertToJsonBase64(new BitmapImage(uri));
             ImageUri = uri;
         }
