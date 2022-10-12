@@ -6,6 +6,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Windows;
 using CardBox.ApiClient.Contracts;
+using CardBox.CompanyManagement.DataProvider;
+using CardBox.MPortalDataBaseClient.Contracts;
+using CardBox.MPortalDataBaseClient.Services;
 
 namespace CardBox.CompanyManagement;
 
@@ -24,6 +27,9 @@ public partial class App : Application
                 services.AddSingleton<IWindowService, WindowService>();
                 services.AddSingleton<ICategoriesService, CategoriesService>();
                 services.AddSingleton<ICompaniesService, CompaniesService>();
+                services.AddSingleton<ICompanyLicensesService, SqlCompanyLicensesService>();
+
+                services.AddSingleton<ICompanyDataProvider, CompanyDataProvider>();
             })
             .Build();
     }

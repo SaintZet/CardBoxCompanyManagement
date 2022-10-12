@@ -51,15 +51,21 @@
                       SelectedItem="{Binding SelectedCompany}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Bulstat"
-                                        Binding="{Binding ID}" />
+                                        Binding="{Binding Company.ID}" />
                     <DataGridTextColumn Header="Name"
-                                        Binding="{Binding Name}" />
+                                        Binding="{Binding Company.Name}" />
                     <DataGridTextColumn Header="Category"
-                                        Binding="{Binding Category.Name}" />
+                                        Binding="{Binding Company.Category.Name}" />
                     <DataGridTextColumn Header="Summary"
-                                        Binding="{Binding Summary}" />
+                                        Binding="{Binding Company.Summary}" />
+                    <DataGridTextColumn Header="Date License"
+                                        Binding="{Binding CompanyLicense.DateTime}" />
+                    <DataGridTextColumn Header="Serial number"
+                                        Binding="{Binding CompanyLicense.SerialNumber}" />
+                    <DataGridTextColumn Header="User ID"
+                                        Binding="{Binding CompanyLicense.UserUniqueNumber}" />
                     <DataGridHyperlinkColumn Header="Image"
-                                             Binding="{Binding Image.Uri}">
+                                             Binding="{Binding Company.Image.Uri}">
                         <DataGridHyperlinkColumn.ElementStyle>
                             <Style>
                                 <EventSetter Event="Hyperlink.Click"

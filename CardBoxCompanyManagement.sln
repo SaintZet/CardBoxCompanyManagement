@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.32413.511
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CardBox.CompanyManagement", "CardBox.CompanyManagement\CardBox.CompanyManagement.csproj", "{4D18A50A-45E1-4EAA-9EB9-A988F1057D33}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CardBox.ApiClient", "CardBox.ApiClient\CardBox.ApiClient.csproj", "{DA1672F5-D31A-4323-9CE8-7329F6FE7849}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardBox.MPortalDataBaseClient", "CardBox.MPortalClient\CardBox.MPortalDataBaseClient.csproj", "{6F5FBC3F-1870-454A-91E5-DA643FC0372C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{DA1672F5-D31A-4323-9CE8-7329F6FE7849}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DA1672F5-D31A-4323-9CE8-7329F6FE7849}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DA1672F5-D31A-4323-9CE8-7329F6FE7849}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F5FBC3F-1870-454A-91E5-DA643FC0372C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F5FBC3F-1870-454A-91E5-DA643FC0372C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F5FBC3F-1870-454A-91E5-DA643FC0372C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F5FBC3F-1870-454A-91E5-DA643FC0372C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

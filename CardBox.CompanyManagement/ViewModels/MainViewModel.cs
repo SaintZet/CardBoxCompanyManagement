@@ -1,6 +1,7 @@
-﻿using CardBox.ApiClient.Contracts;
-using CardBox.ApiClient.Models;
+﻿using CardBox.ApiClient.Models;
+using CardBox.CompanyManagement.DataProvider;
 using CardBox.CompanyManagement.Services;
+using CardBox.CompanyManagement.Wrapper;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
@@ -10,21 +11,21 @@ namespace CardBox.CompanyManagement.ViewModels;
 internal class MainViewModel : BaseViewModel
 {
     private static readonly int[] pageSizes = { 10, 15, 30, 50 };
-    private readonly Paging<Company> _pagingManager = new();
-    private readonly ICompaniesService _companies;
+    private readonly Paging<CompanyWrapper> _pagingManager = new();
     private readonly IWindowService _windowService;
+    private readonly ICompanyDataProvider _companiesProvider;
     private int _selectedPageSize = pageSizes[0];
-    private List<Company> _allCompanies;
-    private List<Company> _filteredCompanies;
-    private List<Company> _pagedCompanies;
+    private List<CompanyWrapper> _allCompanies;
+    private List<CompanyWrapper> _filteredCompanies;
+    private List<CompanyWrapper> _pagedCompanies;
     private string _search = string.Empty;
 
-    public MainViewModel(ICompaniesService companies, IWindowService windowService)
+    public MainViewModel(ICompanyDataProvider companiesProvider, IWindowService windowService)
     {
-        _companies = companies;
+        _companiesProvider = companiesProvider;
         _windowService = windowService;
 
-        _allCompanies = companies.GetCompaniesAsync().Result;
+        _allCompanies = _companiesProvider.GetCompanyWrappers();
         _filteredCompanies = _allCompanies;
 
         _pagingManager.PageIndex = 0;
@@ -32,7 +33,7 @@ internal class MainViewModel : BaseViewModel
     }
 
     public static int[] PageSizes => pageSizes;
-    public List<Company> AllCompanies
+    public List<CompanyWrapper> AllCompanies
     {
         get => _allCompanies!;
         set
@@ -44,7 +45,7 @@ internal class MainViewModel : BaseViewModel
             OnPropertyChanged(nameof(RecordsCount));
         }
     }
-    public List<Company> PagedCompanies
+    public List<CompanyWrapper> PagedCompanies
     {
         get => _pagedCompanies;
         set
@@ -71,7 +72,7 @@ internal class MainViewModel : BaseViewModel
             }
         }
     }
-    public Company? SelectedCompany { get; set; }
+    public CompanyWrapper? SelectedCompany { get; set; }
     public string SearchCriteria
     {
         get => _search;
@@ -97,34 +98,34 @@ internal class MainViewModel : BaseViewModel
         Company company = new();
         if (_windowService.AddWindow(company) == true)
         {
-            _companies.Post(company);
-            AllCompanies = _companies.GetCompaniesAsync().Result;
+            _companiesProvider.Post(company);
+            AllCompanies = _companiesProvider.GetCompanyWrappers();
         }
     }
 
     private void DeleteCompanyWindow(object _)
     {
-        Company company = new(SelectedCompany!);
+        Company company = new(SelectedCompany!.Company);
         if (_windowService.DeleteWindow(company) == true)
         {
-            _companies.Delete(company);
-            AllCompanies = _companies.GetCompaniesAsync().Result;
+            _companiesProvider.Delete(company);
+            AllCompanies = _companiesProvider.GetCompanyWrappers();
         }
     }
 
     private void EditCompanyWindow(object _)
     {
-        Company company = new(SelectedCompany!);
+        Company company = new(SelectedCompany!.Company);
         if (_windowService.EditWindow(company) == true)
         {
-            _companies.Put(company);
-            AllCompanies = _companies.GetCompaniesAsync().Result;
+            _companiesProvider.Put(company);
+            AllCompanies = _companiesProvider.GetCompanyWrappers();
         }
     }
 
-    private List<Company> Filtered(List<Company> companies)
+    private List<CompanyWrapper> Filtered(List<CompanyWrapper> companies)
     {
-        return companies.FindAll(c => c.Name.Contains(_search) || c.ID.Contains(_search)).ToList();
+        return companies.FindAll(c => c.Company.Name.Contains(_search) || c.Company.ID.Contains(_search)).ToList();
     }
 
     private void PagedCompaniesRefresh()
