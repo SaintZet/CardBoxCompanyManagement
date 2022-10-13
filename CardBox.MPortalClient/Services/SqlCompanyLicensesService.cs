@@ -1,7 +1,6 @@
 ﻿using CardBox.MPortalDataBaseClient.Constants;
 using CardBox.MPortalDataBaseClient.Contracts;
 using CardBox.MPortalDataBaseClient.Models;
-using System.Configuration;
 using System.Data.SqlClient;
 
 namespace CardBox.MPortalDataBaseClient.Services;
@@ -12,16 +11,16 @@ public class SqlCompanyLicensesService : ICompanyLicensesService
     {
         Dictionary<string, List<CompanyLicense>> result = new();
 
-        using (var mportalDbCon = new SqlConnection(ConfigurationManager.ConnectionStrings["MPortalDB"].ConnectionString))
+        using (var mportalDbCon = new SqlConnection(ConnectionStrings.PMportalDB))
         {
-            using (var donglesDbCon = new SqlConnection(ConfigurationManager.ConnectionStrings["DonglesDB"].ConnectionString))
+            using (var donglesDbCon = new SqlConnection(ConnectionStrings.DonglesDB))
             {
                 mportalDbCon.Open();
                 donglesDbCon.Open();
 
-                using (var mportalDbCom = new SqlCommand(Queries.PMportal, mportalDbCon))
+                using (var mportalDbCom = new SqlCommand(Queries.PMportalDB, mportalDbCon))
                 {
-                    using var donglesDbCom = new SqlCommand(Queries.Dongles, donglesDbCon);
+                    using var donglesDbCom = new SqlCommand(Queries.DonglesDB, donglesDbCon);
 
                     foreach (var id in companiesID)
                     {
