@@ -15,6 +15,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="View\Resources\Vertical Color.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="CompanyManagment.ico" />
   </ItemGroup>
 
@@ -31,6 +35,10 @@
 
   <ItemGroup>
     <Page Include="App.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <SplashScreen Include="View\Resources\Vertical Color.png" />
   </ItemGroup>
 
 </Project>
