@@ -33,5 +33,5 @@ public class Company
 
     [JsonProperty("image")]
     [JsonConverter(typeof(StringToImageConverter))]
-    public Image Image { get; set; } = new Image(null, null);
+    public Image? Image { get; set; }
 }
