@@ -11,6 +11,11 @@
 *.sln.docstates
 App.config
 
+# Raider .idea
+*.iws
+*.workspace.xml
+*.tasks.xml
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
