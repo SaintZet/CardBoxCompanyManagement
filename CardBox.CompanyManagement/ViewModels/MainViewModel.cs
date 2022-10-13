@@ -11,13 +11,17 @@ namespace CardBox.CompanyManagement.ViewModels;
 internal class MainViewModel : BaseViewModel
 {
     private static readonly int[] pageSizes = { 10, 15, 30, 50 };
+
     private readonly Paging<CompanyWrapper> _pagingManager = new();
     private readonly IWindowService _windowService;
     private readonly ICompanyDataProvider _companiesProvider;
+
     private int _selectedPageSize = pageSizes[0];
+
     private List<CompanyWrapper> _allCompanies;
     private List<CompanyWrapper> _filteredCompanies;
     private List<CompanyWrapper> _pagedCompanies;
+
     private string _search = string.Empty;
 
     public MainViewModel(ICompanyDataProvider companiesProvider, IWindowService windowService)

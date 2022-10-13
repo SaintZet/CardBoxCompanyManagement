@@ -4,12 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
+        xmlns:convertors="clr-namespace:CardBox.CompanyManagement.View.Convertors"
         Title="Company Management"
         WindowStartupLocation="CenterScreen"
         Height="360"
-        MinHeight="360"
+        MinHeight="420"
         Width="720"
-        MinWidth="720">
+        MinWidth="900">
+    <Window.Resources>
+        <convertors:ListToStringConverter x:Key="ListToStringConverter" />
+    </Window.Resources>
     <Grid>
         <Grid>
             <Grid.RowDefinitions>
@@ -57,6 +61,11 @@
                       Style="{StaticResource CRUDDataGridStyle}"
                       ItemsSource="{Binding PagedCompanies}"
                       SelectedItem="{Binding SelectedCompany}">
+                <DataGrid.CellStyle>
+                    <Style TargetType="{x:Type DataGridCell}">
+                        <EventSetter Event="PreviewKeyDown" Handler="DataGridCell_PreviewKeyDown" />
+                    </Style>
+                </DataGrid.CellStyle>
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Bulstat"
                                         Binding="{Binding Company.ID}" />
@@ -67,7 +76,7 @@
                     <DataGridTextColumn Header="Summary"
                                         Binding="{Binding Company.Summary}" />
                     <DataGridTextColumn Header="Date License"
-                                        Binding="{Binding CompanyLicense.DateTime}" />
+                                        Binding="{Binding CompanyLicense.Date}" />
                     <DataGridTextColumn Header="Serial number"
                                         Binding="{Binding CompanyLicense.SerialNumber}" />
                     <DataGridTextColumn Header="User ID"

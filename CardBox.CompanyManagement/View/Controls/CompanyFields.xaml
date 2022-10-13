@@ -29,7 +29,7 @@
                  IsReadOnly="{Binding ReadOnlyID}"
                  PreviewKeyDown="Bulstat_PreviewKeyDown"
                  PreviewTextInput="Bulstat_PreviewTextInput"
-                 Text="{Binding CompanyID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                 Text="{Binding CompanyID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=False}" />
 
         <Label Grid.Row="1"
                Grid.Column="0"

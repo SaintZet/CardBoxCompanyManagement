@@ -49,10 +49,10 @@ internal class CRUDCompanyViewModel : BaseViewModel, IDataErrorInfo
     }
     public Uri ImageUri
     {
-        get => Company.Image.Uri ?? new Uri("about:blank");
+        get => Company.Image!.Uri ?? new Uri("about:blank");
         set
         {
-            Company.Image.Uri = value;
+            Company.Image!.Uri = value;
             OnPropertyChanged();
         }
     }
@@ -126,7 +126,7 @@ internal class CRUDCompanyViewModel : BaseViewModel, IDataErrorInfo
         return string.IsNullOrWhiteSpace(Company.Name) ||
                string.IsNullOrWhiteSpace(Company.ID) ||
                string.IsNullOrWhiteSpace(Company.Summary) ||
-               string.IsNullOrWhiteSpace(Company.Image.Uri?.ToString());
+               string.IsNullOrWhiteSpace(Company.Image?.Uri?.ToString());
     }
 
     private void BrowseImage(object _)
@@ -139,7 +139,7 @@ internal class CRUDCompanyViewModel : BaseViewModel, IDataErrorInfo
         try
         {
             Uri uri = new(_selectImageService.FileName, UriKind.Absolute);
-            Company.Image.Base64 = ImageConvertor.ConvertToJsonBase64(new BitmapImage(uri));
+            Company.Image!.Base64 = ImageConvertor.ConvertToJsonBase64(new BitmapImage(uri));
             ImageUri = uri;
         }
         catch (Exception ex)
