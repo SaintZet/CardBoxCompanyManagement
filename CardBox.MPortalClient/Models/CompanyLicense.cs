@@ -2,8 +2,8 @@
 {
     public class CompanyLicense
     {
-        public DateTime? DateTime { get; set; }
-        public string? SerialNumber { get; set; }
-        public string? UserUniqueNumber { get; set; }
+        public string Date { get; set; } = string.Empty;
+        public string SerialNumber { get; set; } = string.Empty;
+        public string UserUniqueNumber { get; set; } = string.Empty;
     }
 }

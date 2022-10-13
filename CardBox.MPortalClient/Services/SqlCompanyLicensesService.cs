@@ -1,36 +1,33 @@
-﻿using CardBox.MPortalDataBaseClient.Contracts;
+﻿using CardBox.MPortalDataBaseClient.Constants;
+using CardBox.MPortalDataBaseClient.Contracts;
 using CardBox.MPortalDataBaseClient.Models;
+using System.Configuration;
 using System.Data.SqlClient;
 
 namespace CardBox.MPortalDataBaseClient.Services;
 
 public class SqlCompanyLicensesService : ICompanyLicensesService
 {
-    public Dictionary<string, CompanyLicense> GetCompaniesLicense(List<string> companiesID)
+    public Dictionary<string, List<CompanyLicense>> GetCompaniesLicense(List<string> companiesID)
     {
-        Dictionary<string, CompanyLicense> result = new();
+        Dictionary<string, List<CompanyLicense>> result = new();
 
-        string mportalDbQuery = @"select SerialNumber, UserUniqueNumber from [dbo].Dongles d LEFT JOIN[Identity].[Users] u ON d.UserUniqueNumber = u.UniqueNumber WHERE u.TaxId = @TaxId";
-
-        string donglesDbQuery = @"SELECT [ExpirationDate] FROM [Dongles].[dbo].[ProductsExpiration] WHERE ProductID = 6 AND DongleID = @DongleID";
-
-        using (var mportalDbCon = new SqlConnection("Server= User.microinvest.net; Database=Mportal.DB; User id=dongles; password=Micr0!nvest_6380;"))
+        using (var mportalDbCon = new SqlConnection(ConfigurationManager.ConnectionStrings["MPortalDB"].ConnectionString))
         {
-            mportalDbCon.Open();
-
-            using (var donglesDbCon = new SqlConnection("Server= 192.168.0.248; Database=Dongles; User id=dongles; password=Micr0!nvest_6380;"))
+            using (var donglesDbCon = new SqlConnection(ConfigurationManager.ConnectionStrings["DonglesDB"].ConnectionString))
             {
+                mportalDbCon.Open();
                 donglesDbCon.Open();
 
-                using (var mportalDbCom = new SqlCommand(mportalDbQuery, mportalDbCon))
+                using (var mportalDbCom = new SqlCommand(Queries.PMportal, mportalDbCon))
                 {
-                    using var donglesDbCom = new SqlCommand(donglesDbQuery, donglesDbCon);
+                    using var donglesDbCom = new SqlCommand(Queries.Dongles, donglesDbCon);
 
                     foreach (var id in companiesID)
                     {
-                        string userUniqueNumber = string.Empty;
-                        string serialNumber = string.Empty;
-                        object? dateTime = null;
+                        List<CompanyLicense> companyLicenses = new();
+                        string userUniqueNumber;
+                        string serialNumber;
 
                         mportalDbCom.Parameters.AddWithValue("@TaxId", id);
 
@@ -49,25 +46,22 @@ public class SqlCompanyLicensesService : ICompanyLicensesService
                                 }
 
                                 donglesDbCom.Parameters.AddWithValue("@DongleID", serialNumber);
-
-                                dateTime = donglesDbCom.ExecuteScalar();
-
+                                object dateTime = donglesDbCom.ExecuteScalar();
                                 donglesDbCom.Parameters.Clear();
+
+                                companyLicenses.Add(new()
+                                {
+                                    UserUniqueNumber = userUniqueNumber,
+                                    SerialNumber = serialNumber,
+                                    Date = dateTime == null ? string.Empty : ((DateTime)dateTime).ToString("dd.MM.yyyy"),
+                                });
                             }
                         }
 
-                        result.Add(id, new()
-                        {
-                            UserUniqueNumber = userUniqueNumber,
-                            SerialNumber = serialNumber,
-                            DateTime = dateTime != null ? (DateTime)dateTime : null,
-                        });
+                        result.Add(id, companyLicenses);
                     }
                 }
-
-                donglesDbCon.Close();
             }
-            mportalDbCon.Close();
         }
 
         return result;

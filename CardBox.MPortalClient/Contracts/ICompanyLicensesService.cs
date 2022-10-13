@@ -4,6 +4,6 @@ namespace CardBox.MPortalDataBaseClient.Contracts
 {
     public interface ICompanyLicensesService
     {
-        Dictionary<string, CompanyLicense> GetCompaniesLicense(List<string> companiesID);
+        Dictionary<string, List<CompanyLicense>> GetCompaniesLicense(List<string> companiesID);
     }
 }
