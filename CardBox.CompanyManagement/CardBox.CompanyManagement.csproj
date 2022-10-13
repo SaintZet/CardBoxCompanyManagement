@@ -8,6 +8,10 @@
     <UseWPF>true</UseWPF>
     <ApplicationIcon>CompanyManagment.ico</ApplicationIcon>
     <AssemblyName>CardBox.CompanyManagement</AssemblyName>
+	<DebugType>embedded</DebugType>
+	<RuntimeIdentifier>win-x86</RuntimeIdentifier>
+	<PlatformTarget>x86</PlatformTarget>
+	<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
   </PropertyGroup>
 
   <ItemGroup>
