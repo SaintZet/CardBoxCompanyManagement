@@ -49,7 +49,15 @@ internal class CRUDCompanyViewModel : BaseViewModel, IDataErrorInfo
     }
     public Uri ImageUri
     {
-        get => Company.Image!.Uri ?? new Uri("about:blank");
+        get
+        {
+            if (Company.Image is null)
+            {
+                Company.Image = new Image();
+            }
+
+            return Company.Image!.Uri ?? new Uri("about:blank");
+        }
         set
         {
             Company.Image!.Uri = value;
@@ -116,9 +124,10 @@ internal class CRUDCompanyViewModel : BaseViewModel, IDataErrorInfo
             case nameof(CompanyID):
                 _idHasError = !EIKValidator.Validate(CompanyID);
                 return _idHasError ? "Error" : string.Empty;
-        }
 
-        return string.Empty;
+            default:
+                return string.Empty;
+        }
     }
 
     private bool CompanyPropertiesIsNullOrWhiteSpace()

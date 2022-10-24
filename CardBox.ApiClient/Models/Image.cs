@@ -2,6 +2,10 @@
 
 public class Image
 {
+    public Image()
+    {
+    }
+
     public Image(Uri? uri, string? base64)
     {
         Uri = uri;
