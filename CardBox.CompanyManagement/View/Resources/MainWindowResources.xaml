@@ -13,7 +13,7 @@
         <Setter Property="ResizeMode"
                 Value="NoResize" />
         <Setter Property="ShowInTaskbar"
-                Value="False" />
+                Value="True" />
     </Style>
 
     <!--#endregion-->
