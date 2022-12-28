@@ -42,7 +42,7 @@ dotnet publish -c Release -r win-x86 -p:PublishReadyToRun=true -p:PublishSingleF
 
 ## License
 
-This project is licensed under the [NAME HERE] License - see the LICENSE.md file for details
+This project is licensed under the GNU AGPLv3 License - see the LICENSE.md file for details
 
 ## Acknowledgments
 
