@@ -34,6 +34,10 @@ And example of working with a WPF table:
 ``` 
 dotnet publish -c Release -r win-x86 -p:PublishReadyToRun=true -p:PublishSingleFile=true --self-contained false -p:IncludeNativeLibrariesForSelfExtract=true
 ```
+## Authors
+
+Chepets Serhii <br /> 
+Contacts: [LinkedIn](https://www.linkedin.com/in/serhii-chepets-412b46223/) / [GitHub](https://github.com/SaintZet) / [Telegram](https://t.me/SaintZet)
 
 ## Version History
 
