@@ -2,6 +2,10 @@
 
 An WPF application for CRUD operations with a third-party API and own database.
 
+![Alt text](MediaFiles/MainWindow.png "Main window")
+![Alt text](MediaFiles/AddWindow.png "Add window")
+![Alt text](MediaFiles/EditWindow.png "Edit window")
+
 ## Description
 
 In this application, I used the MVVM pattern, DependencyInjection, HttpClient, SqlClient, pattern Wrapper(decorator).
